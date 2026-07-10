@@ -1,77 +1,133 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Enemy Prefabs")]
-    [SerializeField] private EnemyBase[] enemyPrefabs;
+    [System.Serializable]
+    public class EnemyTypeInfo
+    {
+        public EnemyBase prefab;        // префаб врага
+        public int waveUnlock;          // с какой волны доступен (1-я волна = 0 индекс, но лучше считать с 1)
+        [Range(0f, 100f)] public float quotaPercent; // % от общего числа врагов в волне
+        public bool isResidual;         // true для типа, который получает остаток (Ракшаса)
+    }
+
+    [Header("Enemy Types Configuration")]
+    [SerializeField] private List<EnemyTypeInfo> enemyTypes;
 
     [Header("Spawn")]
     [SerializeField] private Transform player;
-    [SerializeField] private float spawnRadius = 12f;
-    [SerializeField] private float waveInterval = 25f;
-
-    [Header("Wave")]
-    [SerializeField] private int firstWaveCount = 15;
-    [SerializeField] private float multiplier = 1.2f;
 
     private bool canSpawn;
-    private int currentWaveCount;
-
     private void Start()
     {
-        currentWaveCount = firstWaveCount;
-    }
-
-    public void StartSpawning()
-    {
-        canSpawn = true;
-        StartCoroutine(SpawnLoop());
-    }
-
-    public void StopSpawning()
-    {
-        canSpawn = false;
-        StopAllCoroutines();
-    }
-
-    IEnumerator SpawnLoop()
-    {
-        while (canSpawn)
+        if (player == null)
         {
-            SpawnWave();
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+                player = playerObj.transform;
+            else
+                Debug.LogError("Player not found in scene!");
+        }
+    }
+    public void StartSpawning() => canSpawn = true;
+    public void StopSpawning() => canSpawn = false;
 
-            yield return new WaitForSeconds(waveInterval);
+    // Вызывается из BattleTimer для спавна волны
+    public void SpawnWaveWithTypes(int waveIndex, int waveSize)
+    {
+        if (!canSpawn) return;
+        if (enemyTypes == null || enemyTypes.Count == 0)
+        {
+            Debug.LogError("Enemy types list is empty! Assign enemy types in inspector.");
+            return;
+        }
 
-            currentWaveCount =
-                Mathf.RoundToInt(currentWaveCount * multiplier);
+        // 1. Считаем, сколько врагов каждого типа нужно спавнить
+        Dictionary<EnemyTypeInfo, int> counts = new Dictionary<EnemyTypeInfo, int>();
+        int totalOther = 0;
+
+        // Сначала обрабатываем все типы, кроме residual (Ракшаса)
+        foreach (var type in enemyTypes)
+        {
+            if (type.isResidual) continue; // пропускаем, обработаем позже
+
+            // Проверяем, доступен ли тип на этой волне (волны считаем с 1, waveIndex начинается с 0)
+            if (waveIndex + 1 >= type.waveUnlock)
+            {
+                int count = Mathf.FloorToInt(waveSize * type.quotaPercent / 100f);
+                counts[type] = count;
+                totalOther += count;
+            }
+            else
+            {
+                counts[type] = 0;
+            }
+        }
+
+        // 2. Теперь residual (Ракшаса) — получает остаток
+        EnemyTypeInfo residualType = null;
+        foreach (var type in enemyTypes)
+        {
+            if (type.isResidual)
+            {
+                residualType = type;
+                break;
+            }
+        }
+
+        if (residualType != null)
+        {
+            int residualCount = Mathf.Max(0, waveSize - totalOther);
+            counts[residualType] = residualCount;
+        }
+
+        // 3. Спавним
+        foreach (var kvp in counts)
+        {
+            int count = kvp.Value;
+            if (count <= 0) continue;
+
+            for (int i = 0; i < count; i++)
+            {
+                SpawnEnemy(kvp.Key.prefab);
+            }
         }
     }
 
-    void SpawnWave()
-    {
-        for (int i = 0; i < currentWaveCount; i++)
-        {
-            SpawnEnemy();
-        }
-    }
-
-    void SpawnEnemy()
+    private void SpawnEnemy(EnemyBase enemyPrefab)
     {
         if (player == null)
-        return;
-        
-        Vector2 direction = Random.insideUnitCircle.normalized;
+        {
+            Debug.LogError("Player not assigned in EnemySpawner!");
+            return;
+        }
+        if (enemyPrefab == null) return;
 
-        Vector2 spawnPosition =
-            (Vector2)player.position + direction * spawnRadius;
+        // Размеры карты
+        float halfWidth = 800f;
+        float halfHeight = 430f;
+        float padding = 20f; // отступ от края, чтобы мобы не появлялись на границе
 
-        int randomEnemy =
-            Random.Range(0, enemyPrefabs.Length);
+        // 4 угловые точки
+        Vector2[] corners = new Vector2[]
+        {
+        new Vector2(-halfWidth + padding, -halfHeight + padding),
+        new Vector2( halfWidth - padding, -halfHeight + padding),
+        new Vector2(-halfWidth + padding,  halfHeight - padding),
+        new Vector2( halfWidth - padding,  halfHeight - padding)
+        };
 
-        Instantiate(
-            enemyPrefabs[randomEnemy],
-            spawnPosition,
-            Quaternion.identity);
+        // Выбираем случайный угол
+        Vector2 spawnPos = corners[Random.Range(0, corners.Length)];
+
+        // Можно добавить небольшой разброс внутри области (опционально)
+        // spawnPos += Random.insideUnitCircle * 10f;
+
+        // Ограничиваем, чтобы не выйти за границы (на всякий случай)
+        spawnPos.x = Mathf.Clamp(spawnPos.x, -halfWidth + padding, halfWidth - padding);
+        spawnPos.y = Mathf.Clamp(spawnPos.y, -halfHeight + padding, halfHeight - padding);
+
+        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
     }
 }

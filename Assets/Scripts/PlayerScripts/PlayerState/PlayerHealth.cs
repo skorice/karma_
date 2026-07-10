@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
 
     private float _currentHealth;
     private int _currentLives;
+    public bool IsDead => _currentHealth <= 0;
 
     public float MaxHealth => settings != null ? settings.Health : 100f;
     public float CurrentHealth => _currentHealth;

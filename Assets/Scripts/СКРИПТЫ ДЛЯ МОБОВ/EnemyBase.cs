@@ -18,14 +18,13 @@ public class EnemyBase : MonoBehaviour
     protected Transform player;
 
     private float attackTimer;
-    public float Damage => damage; 
+    public float Damage => damage;
 
     protected virtual void Start()
     {
         currentHealth = maxHealth;
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-
         if (playerObj != null)
             player = playerObj.transform;
     }
@@ -38,7 +37,6 @@ public class EnemyBase : MonoBehaviour
         Move();
 
         attackTimer -= Time.deltaTime;
-
         if (attackTimer <= 0)
         {
             TryAttack();
@@ -59,7 +57,6 @@ public class EnemyBase : MonoBehaviour
 
         if (distance <= attackRadius)
         {
-            // Наносим урон игроку
             PlayerHealth health = player.GetComponent<PlayerHealth>();
             if (health != null)
             {
@@ -77,12 +74,12 @@ public class EnemyBase : MonoBehaviour
 
     public virtual void TakeDamage(float amount)
     {
-    if (currentHealth <= 0)
-        return;
+        if (currentHealth <= 0)
+            return;
 
-    currentHealth -= amount;
+        currentHealth -= amount;
 
-    if (currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -92,19 +89,13 @@ public class EnemyBase : MonoBehaviour
     {
         if (karmaDropPrefab != null)
         {
-            GameObject drop = Instantiate(
-                karmaDropPrefab,
-                transform.position,
-                Quaternion.identity);
-
+            GameObject drop = Instantiate(karmaDropPrefab, transform.position, Quaternion.identity);
             KarmaDrop karma = drop.GetComponent<KarmaDrop>();
-
             if (karma != null)
-            {
                 karma.SetValue(karmaValue);
-            }
         }
 
+        Debug.Log($"☠️ {name} умер!");
         Destroy(gameObject);
     }
 }

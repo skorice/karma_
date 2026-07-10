@@ -17,8 +17,13 @@ public class PlayerSettings : MonoBehaviour
 
     [Header("Текущий уровень")]
     [SerializeField] private int currentLevel = 1;
-    public float MoveSpeed => BASEmoveSpeed + (currentLevel - 1) * BUFFmoveSpeed;
-    public float AttackPower => BASEattackPower + (currentLevel - 1) * BUFFattackPower;
+
+    // Дебаффы (временные)
+    private float _slowMultiplier = 1f;       // 1 = норма, 0.8 = -20% скорости
+    private float _attackPowerDebuff = 1f;    // 1 = норма, 0.9 = -10% силы атаки
+
+    public float MoveSpeed => (BASEmoveSpeed + (currentLevel - 1) * BUFFmoveSpeed) * _slowMultiplier;
+    public float AttackPower => (BASEattackPower + (currentLevel - 1) * BUFFattackPower) * _attackPowerDebuff;
     public float AttackSpeed => BASEattackSpeed + (currentLevel - 1) * BUFFattackSpeed;
     public float Health => BASEplayerHealth + (currentLevel - 1) * BUFFplayerHealth;
     public float Level =>currentLevel;
@@ -38,4 +43,21 @@ public class PlayerSettings : MonoBehaviour
     {
         return BASElives + count;
     }
+
+
+    // Методы для SnakeTrail
+    public void ApplySnakeDebuff()
+    {
+        _slowMultiplier = 0.8f;      // -20% скорости
+        _attackPowerDebuff = 0.9f;   // -10% силы атаки
+        Debug.Log("Snake debuff applied: speed -20%, attack -10%");
+    }
+
+    public void RemoveSnakeDebuff()
+    {
+        _slowMultiplier = 1f;
+        _attackPowerDebuff = 1f;
+        Debug.Log("Snake debuff removed");
+    }
 }
+
