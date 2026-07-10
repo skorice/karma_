@@ -151,12 +151,12 @@ public class BattleTimer : MonoBehaviour
 
         Debug.Log($"🌀 Портал заспавнен в позиции: {portalSpawnPosition.position}");
 
-        PortalTrigger portalTrigger = spawnedPortal.GetComponent<PortalTrigger>();
-        if (portalTrigger == null)
-        {
-            portalTrigger = spawnedPortal.AddComponent<PortalTrigger>();
-        }
-        portalTrigger.Initialize(nextSceneName);
+        //PortalTrigger portalTrigger = spawnedPortal.GetComponent<PortalTrigger>();
+        //if (portalTrigger == null)
+        //{
+        //    portalTrigger = spawnedPortal.AddComponent<PortalTrigger>();
+        //}
+        //portalTrigger.Initialize(nextSceneName);
     }
 
     private void OnDrawGizmosSelected()

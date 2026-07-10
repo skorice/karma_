@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 3620493790402398058}
   - component: {fileID: 6822949042525345050}
   - component: {fileID: 8356703790284973640}
+  - component: {fileID: -1425232823223174921}
   m_Layer: 0
   m_Name: player_0
   m_TagString: Player
@@ -412,6 +413,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   settings: {fileID: 1754953996361796525}
   healthBar: {fileID: 1504531458627152313}
+--- !u!114 &-1425232823223174921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6291880287133634687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47173e31df7baac439b4f1e7268ba73d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelManager
+  baseKarmaForLevel: 10
+  karmaMultiplier: 1.5
+  levelSlider: {fileID: 146324889168107152, guid: a70cb43489ba4014aa37055ac08958f3, type: 3}
 --- !u!1 &6365238508105053775
 GameObject:
   m_ObjectHideFlags: 0

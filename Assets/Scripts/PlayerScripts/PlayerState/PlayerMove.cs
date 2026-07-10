@@ -17,6 +17,10 @@ public class PlayerMove : MonoBehaviour
     private void FixedUpdate()
     {
         input.Read();
+        // Проверки
+        if (body == null) Debug.LogError("❌ Rigidbody2D не найден!");
+        if (settings == null) Debug.LogError("❌ PlayerSettings не найден!");
+        if (input == null) Debug.LogError("❌ InputReader не создан!");
         Move();
     }
 

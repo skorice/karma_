@@ -3,8 +3,8 @@ using UnityEngine;
 public class KarmaDrop : MonoBehaviour
 {
     [SerializeField] private float destroyTime = 8.4f;
-    [SerializeField] private int minValue = 1;    // Минимальное значение
-    [SerializeField] private int maxValue = 5;    // Максимальное значение
+    [SerializeField] private int minValue = 1;
+    [SerializeField] private int maxValue = 5;
 
     private int value;
 
@@ -15,7 +15,6 @@ public class KarmaDrop : MonoBehaviour
 
     private void Start()
     {
-        // Если значение не установлено, генерируем случайное
         if (value == 0)
         {
             value = Random.Range(minValue, maxValue + 1);
@@ -29,17 +28,17 @@ public class KarmaDrop : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        // Находим компонент PlayerLevel на игроке
-        PlayerLevel playerLevel = other.GetComponent<PlayerLevel>();
 
-        if (playerLevel != null)
+        PlayerLevelManager levelManager = other.GetComponent<PlayerLevelManager>();
+
+        if (levelManager != null)
         {
-            playerLevel.AddKarma(value);
-            Debug.Log($"💎 Игрок подобрал {value} кармы! Всего: {playerLevel.CurrentKarma}, Уровень: {playerLevel.CurrentLevel}");
+            levelManager.AddKarma(value);
+            Debug.Log($"💎 Игрок подобрал {value} кармы! Всего: {levelManager.GetCurrentKarma()}, Уровень: {levelManager.GetCurrentLevel()}");
         }
         else
         {
-            Debug.LogWarning("⚠️ У игрока нет компонента PlayerLevel!");
+            Debug.LogWarning("⚠️ У игрока нет компонента PlayerLevelManager!");
         }
 
         Destroy(gameObject);

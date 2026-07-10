@@ -16,7 +16,7 @@ public class Portal : MonoBehaviour
         // ИДля перехода
         if (CaveManager.Instance != null)
         {
-            CaveManager.Instance.GoToAnomaly();
+           // CaveManager.Instance.GoToAnomaly();
         }
         else
         {
