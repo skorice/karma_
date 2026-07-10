@@ -24,7 +24,6 @@ public class KarmaDrop : MonoBehaviour
         
         // ИНТЕГРАЦИЯ С СИСТЕМОЙ ИГРОКА 
         //
-        // По ТЗ:
         // Подобранная карма должна увеличить опыт/уровень игрока.
         //
         // Здесь надо вызвать метод системы опыта игрока:PlayerLevel level = other.GetComponent<PlayerLevel>();

@@ -20,6 +20,7 @@ public class BattleTimer : MonoBehaviour
 
     private float timer;
     private bool battleFinished;
+    private GameObject spawnedPortal;
 
     private void Start()
     {
@@ -31,7 +32,6 @@ public class BattleTimer : MonoBehaviour
             timerSlider.value = battleDuration;
         }
 
-        // Запуск спавна врагов
         if (spawner != null)
         {
             spawner.StartSpawning();
@@ -78,15 +78,14 @@ public class BattleTimer : MonoBehaviour
         if (spawner != null)
             spawner.StopSpawning();
 
-        if (portalPrefab != null)
+        // Спавним портал
+        if (portalPrefab != null && spawnedPortal == null)
         {
-            Instantiate(
-            portalPrefab,
-            portalSpawnPosition,
-            Quaternion.identity);
+            spawnedPortal = Instantiate(portalPrefab, portalSpawnPosition, Quaternion.identity);
+            Debug.Log($"Портал заспавнен в позиции: {portalSpawnPosition}");
         }
 
-        Debug.Log("Battle Finished");
+        Debug.Log("Бой закончился! Ожидаем входа в портал...");
         enabled = false;
     }
 }
