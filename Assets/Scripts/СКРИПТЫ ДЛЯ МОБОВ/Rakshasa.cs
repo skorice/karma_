@@ -2,19 +2,24 @@ using UnityEngine;
 
 public class Rakshasa : EnemyBase
 {
+    [Header("Ranged Attack")]
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float shootCooldown = 3f;
+    [SerializeField] private float minDistance = 5f;
+    [SerializeField] private float maxDistance = 8f;
+
     [Header("Pack Buff")]
     [SerializeField] private float checkRadius = 3f;
     [SerializeField] private int requiredAllies = 4;
 
-    private float baseHealth = 45f;
-    private float baseSpeed=1.2f;
-    private float baseDamage=8f;
-    private float buffTimer = 0f; // Добавлено объявление переменной
+    private float shootTimer;
+    private float baseSpeed;
+    private float baseDamage;
+    private float buffTimer = 0f; // ← добавлено!
 
     protected override void Start()
     {
         base.Start();
-
         baseSpeed = moveSpeed;
         baseDamage = damage;
     }
@@ -23,8 +28,39 @@ public class Rakshasa : EnemyBase
     {
         base.Update();
 
-        buffTimer += Time.deltaTime;
+        // Перемещение с учётом дистанции
+        float distance = 0f; // ← объявляем ЗДЕСЬ, чтобы была доступна во всём методе
+        if (player != null)
+        {
+            distance = Vector2.Distance(transform.position, player.position);
 
+            if (distance > maxDistance)
+            {
+                // Приближаемся
+                transform.position = Vector2.MoveTowards(
+                    transform.position,
+                    player.position,
+                    moveSpeed * Time.deltaTime);
+            }
+            else if (distance < minDistance)
+            {
+                // Отступаем
+                Vector2 dir = (transform.position - player.position).normalized;
+                transform.position += (Vector3)(dir * moveSpeed * Time.deltaTime);
+            }
+            // иначе стоим на месте
+        }
+
+        // Стрельба
+        shootTimer -= Time.deltaTime;
+        if (shootTimer <= 0 && player != null && distance <= maxDistance)
+        {
+            Shoot();
+            shootTimer = shootCooldown;
+        }
+
+        // Обновление баффа стаи
+        buffTimer += Time.deltaTime;
         if (buffTimer >= 0.5f)
         {
             UpdatePackBonus();
@@ -32,14 +68,24 @@ public class Rakshasa : EnemyBase
         }
     }
 
-    private void UpdatePackBonus() // Только один метод
+    private void Shoot()
     {
-        Collider2D[] nearby = Physics2D.OverlapCircleAll(
-            transform.position,
-            checkRadius);
+        if (projectilePrefab == null) return;
+        if (player == null) return;
 
+        Vector2 direction = (player.position - transform.position).normalized;
+        GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        Projectile projectile = proj.GetComponent<Projectile>();
+        if (projectile != null)
+        {
+            projectile.SetDirection(direction);
+        }
+    }
+
+    private void UpdatePackBonus()
+    {
+        Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, checkRadius);
         int count = 0;
-
         foreach (Collider2D col in nearby)
         {
             if (col.GetComponent<Rakshasa>() != null)
@@ -58,11 +104,11 @@ public class Rakshasa : EnemyBase
         }
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, checkRadius);
     }
-    #endif
+#endif
 }

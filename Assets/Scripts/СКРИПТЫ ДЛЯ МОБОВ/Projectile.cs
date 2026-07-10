@@ -6,50 +6,54 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float damage = 6f;
     [SerializeField] private float lifeTime = 5f;
 
-    private Transform player;
-    private Vector2 direction;
+    private Vector2 direction = Vector2.zero;
+    private bool isReady = false;
 
     private void Start()
     {
         Destroy(gameObject, lifeTime);
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-
         if (playerObj != null)
         {
-            player = playerObj.transform;
-            direction = (player.position - transform.position).normalized;
+            Vector2 dir = (playerObj.transform.position - transform.position).normalized;
+            SetDirection(dir);
+            Debug.Log($"Projectile created! Direction: {dir}");
+        }
+        else
+        {
+            Debug.LogWarning("Projectile: Player not found!");
+            Destroy(gameObject);
         }
     }
 
-    private void Update()
-{
-    if (player == null)
+    public void SetDirection(Vector2 dir)
     {
-        Destroy(gameObject);
-        return;
+        direction = dir.normalized;
+        isReady = true;
+        Debug.Log($"Projectile direction set to: {direction}");
     }
 
-    transform.position +=
-        (Vector3)(direction * speed * Time.deltaTime);
-}
+    private void Update()
+    {
+        if (!isReady || direction == Vector2.zero)
+        {
+            Debug.LogWarning($"Projectile: not ready! isReady={isReady}, direction={direction}");
+            return;
+        }
+
+        transform.position += (Vector3)(direction * speed * Time.deltaTime);
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
-            return;
+        if (!other.CompareTag("Player")) return;
 
-        // ==========================================================
-        // ЗАГЛУШКА ДЛЯ ТЕСТИРОВАНИЯ
-        // ВРЕМЕННО используется PlayerHealth.cs.
-        // После интеграции заменить на систему от Юли.
-        // ==========================================================
-
-        PlayerSettings health = other.GetComponent<PlayerSettings>();
-
+        PlayerHealth health = other.GetComponent<PlayerHealth>();
         if (health != null)
         {
             health.TakeDamage(damage);
+            Debug.Log($"💥 Projectile hit player for {damage} damage!");
         }
 
         Destroy(gameObject);

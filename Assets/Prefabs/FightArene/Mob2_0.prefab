@@ -154,7 +154,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -165,7 +165,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &8405083080745002911
 MonoBehaviour:
@@ -180,9 +180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Kimnara
   maxHealth: 50
-  moveSpeed: 3
+  moveSpeed: 100
   damage: 5
-  attackRadius: 1.2
+  attackRadius: 10
   attackCooldown: 1
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
