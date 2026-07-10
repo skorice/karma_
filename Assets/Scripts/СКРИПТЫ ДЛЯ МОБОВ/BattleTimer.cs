@@ -10,17 +10,11 @@ public class BattleTimer : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private Slider timerSlider;
 
     [Header("Spawn")]
     [SerializeField] private EnemySpawner spawner;
     [SerializeField] private float waveInterval = 25f;
-
-    [Header("References")]
-    [SerializeField] private PlayerSettings playerSettings;
-    [SerializeField] private PlayerHealth playerHealth;
-
-    [Header("TimeSlider")]
-    [SerializeField] private Slider timerSlider;
 
     [Header("Wave Settings")]
     [SerializeField] private int baseCount = 2;
@@ -28,12 +22,18 @@ public class BattleTimer : MonoBehaviour
     [SerializeField] private int baseWaveAdd = 0;
     [SerializeField] private int levelWaveAdd = 1;
 
+    [Header("Portal")]
+    [SerializeField] private GameObject portalPrefab;
+    [SerializeField] private Transform portalSpawnPosition;
+    [SerializeField] private string nextSceneName = "Anomaly";
+
     private float timer;
     private bool battleFinished;
     private float waveTimer;
     private int waveIndex;
     private int currentWaveCount;
     private GameObject spawnedPortal;
+    private PlayerSettings playerSettings;
 
     private void Start()
     {
@@ -45,6 +45,8 @@ public class BattleTimer : MonoBehaviour
             timerSlider.value = battleDuration;
         }
 
+        playerSettings = FindFirstObjectByType<PlayerSettings>();
+
         waveIndex = 0;
         currentWaveCount = GetWaveCount(waveIndex);
         waveTimer = waveInterval;
@@ -52,13 +54,11 @@ public class BattleTimer : MonoBehaviour
         if (spawner != null)
         {
             spawner.StartSpawning();
-            // Сразу спавним первую волну (маленькую)
             spawner.SpawnWaveWithTypes(waveIndex, currentWaveCount);
 
-            // Готовимся к следующей волне
             waveIndex++;
             currentWaveCount = GetWaveCount(waveIndex);
-            waveTimer = waveInterval; // теперь таймер до следующей волны
+            waveTimer = waveInterval;
         }
     }
 
@@ -75,16 +75,14 @@ public class BattleTimer : MonoBehaviour
             waveTimer -= Time.deltaTime;
             if (waveTimer <= 0)
             {
-                // Спавним волну с учётом типов врагов
                 spawner.SpawnWaveWithTypes(waveIndex, currentWaveCount);
-
                 waveIndex++;
                 currentWaveCount = GetWaveCount(waveIndex);
                 waveTimer = waveInterval;
             }
         }
 
-        if (timer <= 0)
+        if (timer <= 0 && !battleFinished)
         {
             EndBattle();
         }
@@ -110,29 +108,63 @@ public class BattleTimer : MonoBehaviour
     private void EndBattle()
     {
         battleFinished = true;
+
         if (spawner != null) spawner.StopSpawning();
 
-        bool isPlayerAlive = playerHealth != null && !playerHealth.IsDead;
+        Debug.Log("⚔️ Битва окончена! Спавним портал...");
+        SpawnPortal();
 
-        if (isPlayerAlive)
-        {
-            Debug.Log("Battle finished — player alive! Loading Anomaly...");
-            SceneManager.LoadScene("Anomaly");
-        }
-        else
-        {
-            Debug.Log("Battle finished — player dead! Loading MainMenu...");
-            SceneManager.LoadScene("MainMenu");
-        }
-
-        // Спавним портал
-        if (portalPrefab != null && spawnedPortal == null)
-        {
-            spawnedPortal = Instantiate(portalPrefab, portalSpawnPosition, Quaternion.identity);
-            Debug.Log($"Портал заспавнен в позиции: {portalSpawnPosition}");
-        }
-
-        Debug.Log("Бой закончился! Ожидаем входа в портал...");
         enabled = false;
+    }
+
+    private void SpawnPortal()
+    {
+        if (portalPrefab == null)
+        {
+            Debug.LogError("❌ Portal Prefab не назначен в инспекторе!");
+            return;
+        }
+
+        if (portalSpawnPosition == null)
+        {
+            Debug.LogWarning("⚠️ Portal Spawn Position не назначен! Использую позицию игрока.");
+
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                GameObject tempPos = new GameObject("PortalSpawnPosition");
+                tempPos.transform.position = player.transform.position;
+                portalSpawnPosition = tempPos.transform;
+            }
+            else
+            {
+                Debug.LogError("❌ Не найдена позиция для спавна портала!");
+                return;
+            }
+        }
+
+        spawnedPortal = Instantiate(
+            portalPrefab,
+            portalSpawnPosition.position,
+            Quaternion.identity
+        );
+
+        Debug.Log($"🌀 Портал заспавнен в позиции: {portalSpawnPosition.position}");
+
+        PortalTrigger portalTrigger = spawnedPortal.GetComponent<PortalTrigger>();
+        if (portalTrigger == null)
+        {
+            portalTrigger = spawnedPortal.AddComponent<PortalTrigger>();
+        }
+        portalTrigger.Initialize(nextSceneName);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (portalSpawnPosition != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(portalSpawnPosition.position, 1f);
+        }
     }
 }

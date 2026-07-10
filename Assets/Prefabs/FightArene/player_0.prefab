@@ -363,10 +363,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSettings
   BASEmoveSpeed: 120
-  BASEattackPower: 7
+  BASEattackPower: 20
   BASEattackSpeed: 0.6
-  BASEplayerHealth: 80
-  BASElives: 2
+  BASEplayerHealth: 200
+  BASElives: 3
   BUFFmoveSpeed: 0.1
   BUFFattackPower: 0.5
   BUFFattackSpeed: 0.05

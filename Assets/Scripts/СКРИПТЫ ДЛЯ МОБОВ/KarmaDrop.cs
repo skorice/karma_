@@ -3,6 +3,8 @@ using UnityEngine;
 public class KarmaDrop : MonoBehaviour
 {
     [SerializeField] private float destroyTime = 8.4f;
+    [SerializeField] private int minValue = 1;    // Минимальное значение
+    [SerializeField] private int maxValue = 5;    // Максимальное значение
 
     private int value;
 
@@ -13,6 +15,12 @@ public class KarmaDrop : MonoBehaviour
 
     private void Start()
     {
+        // Если значение не установлено, генерируем случайное
+        if (value == 0)
+        {
+            value = Random.Range(minValue, maxValue + 1);
+        }
+
         Destroy(gameObject, destroyTime);
     }
 
@@ -21,15 +29,18 @@ public class KarmaDrop : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        
-        // ИНТЕГРАЦИЯ С СИСТЕМОЙ ИГРОКА 
-        //
-        // Подобранная карма должна увеличить опыт/уровень игрока.
-        //
-        // Здесь надо вызвать метод системы опыта игрока:PlayerLevel level = other.GetComponent<PlayerLevel>();
-        // level.AddKarma(value);
+        // Находим компонент PlayerLevel на игроке
+        PlayerLevel playerLevel = other.GetComponent<PlayerLevel>();
 
-        Debug.Log($"Player picked up {value} karma.");
+        if (playerLevel != null)
+        {
+            playerLevel.AddKarma(value);
+            Debug.Log($"💎 Игрок подобрал {value} кармы! Всего: {playerLevel.CurrentKarma}, Уровень: {playerLevel.CurrentLevel}");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ У игрока нет компонента PlayerLevel!");
+        }
 
         Destroy(gameObject);
     }

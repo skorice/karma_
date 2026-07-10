@@ -8,6 +8,7 @@ public class PlayerSettings : MonoBehaviour
     [SerializeField] private float BASEattackSpeed = 0.6f;
     [SerializeField] private float BASEplayerHealth = 100f;
     [SerializeField] private int BASElives = 3;
+    [SerializeField] private int PlayerLevel = 1;
     // Баффы за уровни
     [Header("Настройки прокачки")]
     [SerializeField] private float BUFFmoveSpeed = 0.1f;
@@ -15,13 +16,14 @@ public class PlayerSettings : MonoBehaviour
     [SerializeField] private float BUFFattackSpeed = 0.05f;
     [SerializeField] private float BUFFplayerHealth = 10f;
 
-    [Header("Текущий уровень")]
+    [Header("Текущий цикл")]
     [SerializeField] private int currentLevel = 1;
 
     // Дебаффы (временные)
     private float _slowMultiplier = 1f;       // 1 = норма, 0.8 = -20% скорости
     private float _attackPowerDebuff = 1f;    // 1 = норма, 0.9 = -10% силы атаки
 
+    public int playerLvl => PlayerLevel;
     public float MoveSpeed => (BASEmoveSpeed + (currentLevel - 1) * BUFFmoveSpeed) * _slowMultiplier;
     public float AttackPower => (BASEattackPower + (currentLevel - 1) * BUFFattackPower) * _attackPowerDebuff;
     public float AttackSpeed => BASEattackSpeed + (currentLevel - 1) * BUFFattackSpeed;
@@ -32,6 +34,7 @@ public class PlayerSettings : MonoBehaviour
     public float TakeDamage(float damage) { return Health - damage; }
     public float NewLevel()
     {
+        playerLevel++;
         return BASEplayerHealth + (Level - 1) * BUFFplayerHealth;
     }
 
