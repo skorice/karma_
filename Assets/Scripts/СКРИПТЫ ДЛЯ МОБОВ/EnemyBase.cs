@@ -87,15 +87,28 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Die()
     {
+        Debug.Log($"💀 {name} умер! Попытка спавна кармы...");
+
         if (karmaDropPrefab != null)
         {
+            Debug.Log($"✅ Префаб кармы есть: {karmaDropPrefab.name}");
             GameObject drop = Instantiate(karmaDropPrefab, transform.position, Quaternion.identity);
             KarmaDrop karma = drop.GetComponent<KarmaDrop>();
             if (karma != null)
+            {
                 karma.SetValue(karmaValue);
+                Debug.Log($"💎 Спавнена карма значением {karmaValue}");
+            }
+            else
+            {
+                Debug.LogWarning($"⚠️ На префабе {karmaDropPrefab.name} нет компонента KarmaDrop!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ У {name} не назначен KarmaDropPrefab!");
         }
 
-        Debug.Log($"☠️ {name} умер!");
         Destroy(gameObject);
     }
 }
