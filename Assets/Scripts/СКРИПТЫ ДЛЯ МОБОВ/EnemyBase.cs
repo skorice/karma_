@@ -15,14 +15,20 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] protected GameObject karmaDropPrefab;
     [SerializeField] protected int karmaValue = 1;
 
+    [Header("Stun")]
+    [SerializeField] protected float stunDuration = 0.5f; // длительность заморозки
+
     protected float currentHealth;
     protected Transform player;
     private float attackTimer;
     public float Damage => damage;
 
-    protected Rigidbody2D rb;
     protected SpriteRenderer spriteRenderer;
     private Color originalColor;
+
+    // Для стауна
+    private bool isStunned;
+    private float stunTimer;
 
     protected virtual void Start()
     {
@@ -30,30 +36,41 @@ public class EnemyBase : MonoBehaviour
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) player = playerObj.transform;
 
-        rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null) originalColor = spriteRenderer.color;
     }
 
     protected virtual void Update()
     {
+        // Обновляем стаун
+        if (isStunned)
+        {
+            stunTimer -= Time.deltaTime;
+            if (stunTimer <= 0)
+            {
+                isStunned = false;
+                // Можно добавить лог для отладки
+                // Debug.Log($"{name} вышел из стауна");
+            }
+            // Если в стауне — не двигаемся и не атакуем
+            return;
+        }
+
         if (player == null) return;
+
         Move();
         attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0) TryAttack();
+        if (attackTimer <= 0)
+            TryAttack();
     }
 
     protected virtual void Move()
     {
-        if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
-        {
-            Vector2 direction = ((Vector2)player.position - rb.position).normalized;
-            rb.linearVelocity = direction * moveSpeed;
-        }
-        else
-        {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
-        }
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            player.position,
+            moveSpeed * Time.deltaTime
+        );
     }
 
     protected virtual void TryAttack()
@@ -76,17 +93,26 @@ public class EnemyBase : MonoBehaviour
         if (currentHealth <= 0) return;
         currentHealth -= amount;
 
-        // Красная вспышка
+        // Визуальный эффект (красная вспышка)
         StartCoroutine(FlashRed());
+
+        // Стаун (заморозка)
+        ApplyStun();
 
         if (currentHealth <= 0)
             Die();
     }
 
+    private void ApplyStun()
+    {
+        isStunned = true;
+        stunTimer = stunDuration;
+    }
+
     private IEnumerator FlashRed()
     {
         if (spriteRenderer == null) yield break;
-        spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 1f);
+        spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 0.7f);
         yield return new WaitForSeconds(0.15f);
         spriteRenderer.color = originalColor;
     }
