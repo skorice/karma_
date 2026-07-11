@@ -7,6 +7,10 @@ public class EnemyBase : MonoBehaviour
     [Header("Stats")]
     [SerializeField] protected float maxHealth = 50f;
     [SerializeField] protected float moveSpeed = 3f;
+    // Насколько быстро враг доворачивает скорость к нужному направлению.
+    // Меньше = больше инерции/запаздывания, больше = резче реакция.
+    [SerializeField] private float turnSpeed = 4f;
+
     [SerializeField] protected float damage = 5f;
     [SerializeField] protected float attackRadius = 1.2f;
     [SerializeField] protected float attackCooldown = 1f;
@@ -28,6 +32,8 @@ public class EnemyBase : MonoBehaviour
 
     private bool isStunned;
     private float stunTimer;
+
+    private Vector2 currentVelocity;
 
     protected virtual void Start()
     {
@@ -57,11 +63,21 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Move()
     {
-        transform.position = Vector2.MoveTowards(
-            transform.position,
-            player.position,
-            moveSpeed * Time.deltaTime
-        );
+        //transform.position = Vector2.MoveTowards(
+        //    transform.position,
+        //    player.position,
+        //    moveSpeed * Time.deltaTime
+        //);
+
+        // Желаемая скорость — направление к игроку на полной скорости
+        Vector2 desiredDirection = ((Vector2)player.position - (Vector2)transform.position).normalized;
+        Vector2 desiredVelocity = desiredDirection * moveSpeed;
+
+        // Плавно подтягиваем текущую скорость к желаемой (инерция)
+        currentVelocity = Vector2.Lerp(currentVelocity, desiredVelocity, turnSpeed * Time.deltaTime);
+
+        // Двигаемся по сглаженной скорости
+        transform.position += (Vector3)(currentVelocity * Time.deltaTime);
     }
 
     protected virtual void TryAttack()
