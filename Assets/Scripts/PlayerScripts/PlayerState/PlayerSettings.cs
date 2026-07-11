@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerSettings : MonoBehaviour
 {
@@ -9,8 +10,7 @@ public class PlayerSettings : MonoBehaviour
     [SerializeField] private float BASEplayerHealth = 100f;
     [SerializeField] private int BASElives = 3;
 
-    // Баффы за уровни
-    [Header("Настройки прокачки")]
+    [Header("Баффы за уровни")]
     [SerializeField] private float BUFFmoveSpeed = 0.1f;
     [SerializeField] private float BUFFattackPower = 0.5f;
     [SerializeField] private float BUFFattackSpeed = 0.05f;
@@ -19,9 +19,13 @@ public class PlayerSettings : MonoBehaviour
     [Header("Текущий уровень")]
     [SerializeField] private int currentLevel = 1;
 
-    // Дебаффы (временные)
     private float _slowMultiplier = 1f;
     private float _attackPowerDebuff = 1f;
+
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+    private Color baseColor; // текущий "базовый" цвет (оригинал или зелёный)
+    private Coroutine flashCoroutine;
 
     public int playerLvl => currentLevel;
     public float MoveSpeed => (BASEmoveSpeed + (currentLevel - 1) * BUFFmoveSpeed) * _slowMultiplier;
@@ -31,9 +35,18 @@ public class PlayerSettings : MonoBehaviour
     public float Level => currentLevel;
     public int Lives => BASElives;
 
+    private void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+            baseColor = originalColor;
+        }
+    }
+
     public float TakeDamage(float damage) { return Health - damage; }
 
-    // 🔥 ИСПРАВЛЕНО: повышаем уровень
     public float NewLevel()
     {
         currentLevel++;
@@ -50,12 +63,17 @@ public class PlayerSettings : MonoBehaviour
         return BASElives + count;
     }
 
-    // Методы для SnakeTrail
     public void ApplySnakeDebuff()
     {
         _slowMultiplier = 0.8f;
         _attackPowerDebuff = 0.9f;
-        Debug.Log("Snake debuff applied: speed -20%, attack -10%");
+        Debug.Log("Snake debuff applied");
+
+        if (spriteRenderer != null)
+        {
+            baseColor = new Color(0f, 1f, 0f, 1f); // зелёный, 30% прозрачности
+            spriteRenderer.color = baseColor;
+        }
     }
 
     public void RemoveSnakeDebuff()
@@ -63,8 +81,33 @@ public class PlayerSettings : MonoBehaviour
         _slowMultiplier = 1f;
         _attackPowerDebuff = 1f;
         Debug.Log("Snake debuff removed");
+
+        if (spriteRenderer != null)
+        {
+            baseColor = originalColor;
+            spriteRenderer.color = baseColor;
+        }
     }
 
+    // Красная вспышка при получении урона
+    public void FlashRed()
+    {
+        if (spriteRenderer == null) return;
+        if (flashCoroutine != null) StopCoroutine(flashCoroutine);
+        flashCoroutine = StartCoroutine(FlashRedCoroutine());
+    }
+
+    private IEnumerator FlashRedCoroutine()
+    {
+        // Сохраняем текущий базовый цвет (оригинал или зелёный)
+        Color targetColor = baseColor;
+        // Устанавливаем красный полупрозрачный
+        spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 1f);
+        yield return new WaitForSeconds(0.15f);
+        // Возвращаем базовый цвет
+        spriteRenderer.color = targetColor;
+        flashCoroutine = null;
+    }
 
     public void SetLevel(int newLevel)
     {

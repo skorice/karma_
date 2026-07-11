@@ -266,7 +266,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4334783836991956000, guid: a62ea724ff6cc414e9e43ebfd6a9e03e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -373,6 +373,7 @@ MonoBehaviour:
   BUFFattackSpeed: 0.05
   BUFFplayerHealth: 50
   currentLevel: 1
+  debuffOverlay: {fileID: 8647961459945934959, guid: 9d5d86f8014e8914186d79bfd0a7280e, type: 3}
 --- !u!114 &3620493790402398058
 MonoBehaviour:
   m_ObjectHideFlags: 0

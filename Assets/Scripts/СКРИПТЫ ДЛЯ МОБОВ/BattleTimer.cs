@@ -20,9 +20,16 @@ public class BattleTimer : MonoBehaviour
     [SerializeField] private float waveInterval = 25f;
 
     [Header("Wave Settings")]
+    [Tooltip("Базовое количество врагов в первой волне")]
     [SerializeField] private int baseCount = 2;
+
+    [Tooltip("Дополнительные враги за каждый уровень игрока")]
     [SerializeField] private int levelStartAdd = 2;
+
+    [Tooltip("Дополнительные враги за каждую волну (не зависит от уровня)")]
     [SerializeField] private int baseWaveAdd = 0;
+
+    [Tooltip("Дополнительные враги за каждую волну, умноженные на уровень")]
     [SerializeField] private int levelWaveAdd = 1;
 
     [Header("Portal")]
