@@ -6,8 +6,8 @@ public class EnemySpawner : MonoBehaviour
     [System.Serializable]
     public class EnemyTypeInfo
     {
-        public EnemyBase prefab;        // префаб врага
-        public int waveUnlock;          // с какой волны доступен (1-я волна = 0 индекс, но лучше считать с 1)
+        public EnemyBase prefab;  
+        public int waveUnlock;          // с какой волны доступен
         [Range(0f, 100f)] public float quotaPercent; // % от общего числа врагов в волне
         public bool isResidual;         // true для типа, который получает остаток (Ракшаса)
     }
@@ -27,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
             if (playerObj != null)
                 player = playerObj.transform;
             else
-                Debug.LogError("Player not found in scene!");
+                Debug.LogError("Игрок не найден");
         }
     }
     public void StartSpawning() => canSpawn = true;
@@ -39,20 +39,19 @@ public class EnemySpawner : MonoBehaviour
         if (!canSpawn) return;
         if (enemyTypes == null || enemyTypes.Count == 0)
         {
-            Debug.LogError("Enemy types list is empty! Assign enemy types in inspector.");
+            Debug.LogError("Список мобов для спавна не заполнен");
             return;
         }
 
-        // 1. Считаем, сколько врагов каждого типа нужно спавнить
+        // Считаем, сколько врагов каждого типа нужно спавнить
         Dictionary<EnemyTypeInfo, int> counts = new Dictionary<EnemyTypeInfo, int>();
         int totalOther = 0;
 
-        // Сначала обрабатываем все типы, кроме residual (Ракшаса)
         foreach (var type in enemyTypes)
         {
             if (type.isResidual) continue; // пропускаем, обработаем позже
 
-            // Проверяем, доступен ли тип на этой волне (волны считаем с 1, waveIndex начинается с 0)
+            // Проверяем, доступен ли тип на этой волне
             if (waveIndex + 1 >= type.waveUnlock)
             {
                 int count = Mathf.FloorToInt(waveSize * type.quotaPercent / 100f);
@@ -65,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        // 2. Теперь residual (Ракшаса) — получает остаток
+        // IsResidual
         EnemyTypeInfo residualType = null;
         foreach (var type in enemyTypes)
         {
@@ -82,7 +81,7 @@ public class EnemySpawner : MonoBehaviour
             counts[residualType] = residualCount;
         }
 
-        // 3. Спавним
+        // Спавн
         foreach (var kvp in counts)
         {
             int count = kvp.Value;
@@ -121,10 +120,9 @@ public class EnemySpawner : MonoBehaviour
         // Выбираем случайный угол
         Vector2 spawnPos = corners[Random.Range(0, corners.Length)];
 
-        // Можно добавить небольшой разброс внутри области (опционально)
-        // spawnPos += Random.insideUnitCircle * 10f;
+        spawnPos += Random.insideUnitCircle * 10f;
 
-        // Ограничиваем, чтобы не выйти за границы (на всякий случай)
+        // Ограничиваем, чтобы не выйти за границы
         spawnPos.x = Mathf.Clamp(spawnPos.x, -halfWidth + padding, halfWidth - padding);
         spawnPos.y = Mathf.Clamp(spawnPos.y, -halfHeight + padding, halfHeight - padding);
 

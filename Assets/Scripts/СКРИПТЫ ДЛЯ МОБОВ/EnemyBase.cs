@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
 public class EnemyBase : MonoBehaviour
@@ -16,45 +17,48 @@ public class EnemyBase : MonoBehaviour
 
     protected float currentHealth;
     protected Transform player;
-
     private float attackTimer;
     public float Damage => damage;
+
+    protected Rigidbody2D rb;
+    protected SpriteRenderer spriteRenderer;
+    private Color originalColor;
 
     protected virtual void Start()
     {
         currentHealth = maxHealth;
-
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-            player = playerObj.transform;
+        if (playerObj != null) player = playerObj.transform;
+
+        rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null) originalColor = spriteRenderer.color;
     }
 
     protected virtual void Update()
     {
-        if (player == null)
-            return;
-
+        if (player == null) return;
         Move();
-
         attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0)
-        {
-            TryAttack();
-        }
+        if (attackTimer <= 0) TryAttack();
     }
 
     protected virtual void Move()
     {
-        transform.position = Vector2.MoveTowards(
-            transform.position,
-            player.position,
-            moveSpeed * Time.deltaTime);
+        if (rb != null && rb.bodyType != RigidbodyType2D.Kinematic)
+        {
+            Vector2 direction = ((Vector2)player.position - rb.position).normalized;
+            rb.linearVelocity = direction * moveSpeed;
+        }
+        else
+        {
+            transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+        }
     }
 
     protected virtual void TryAttack()
     {
         float distance = Vector2.Distance(transform.position, player.position);
-
         if (distance <= attackRadius)
         {
             PlayerHealth health = player.GetComponent<PlayerHealth>();
@@ -63,52 +67,39 @@ public class EnemyBase : MonoBehaviour
                 health.TakeDamage(damage);
                 Debug.Log($"{name} атаковал игрока! Урон: {damage}");
             }
-            else
-            {
-                Debug.LogWarning($"{name}: PlayerHealth не найден на игроке!");
-            }
-
             attackTimer = attackCooldown;
         }
     }
 
     public virtual void TakeDamage(float amount)
     {
-        if (currentHealth <= 0)
-            return;
-
+        if (currentHealth <= 0) return;
         currentHealth -= amount;
 
+        // Красная вспышка
+        StartCoroutine(FlashRed());
+
         if (currentHealth <= 0)
-        {
             Die();
-        }
+    }
+
+    private IEnumerator FlashRed()
+    {
+        if (spriteRenderer == null) yield break;
+        spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 1f);
+        yield return new WaitForSeconds(0.15f);
+        spriteRenderer.color = originalColor;
     }
 
     protected virtual void Die()
     {
         Debug.Log($"💀 {name} умер! Попытка спавна кармы...");
-
         if (karmaDropPrefab != null)
         {
-            Debug.Log($"✅ Префаб кармы есть: {karmaDropPrefab.name}");
             GameObject drop = Instantiate(karmaDropPrefab, transform.position, Quaternion.identity);
             KarmaDrop karma = drop.GetComponent<KarmaDrop>();
-            if (karma != null)
-            {
-                karma.SetValue(karmaValue);
-                Debug.Log($"💎 Спавнена карма значением {karmaValue}");
-            }
-            else
-            {
-                Debug.LogWarning($"⚠️ На префабе {karmaDropPrefab.name} нет компонента KarmaDrop!");
-            }
+            if (karma != null) karma.SetValue(karmaValue);
         }
-        else
-        {
-            Debug.LogWarning($"⚠️ У {name} не назначен KarmaDropPrefab!");
-        }
-
         Destroy(gameObject);
     }
 }

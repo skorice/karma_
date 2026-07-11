@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
             settings = GetComponent<PlayerSettings>();
 
         if (settings == null)
-            Debug.LogError("PlayerSettings не найден! Назначьте его в инспекторе.");
+            Debug.LogError("PlayerSettings не найден в инспекторе.");
     }
 
     private void Start()
@@ -54,6 +54,10 @@ public class PlayerHealth : MonoBehaviour
         _currentHealth = Mathf.Max(0, _currentHealth - damage);
         OnHealthChanged?.Invoke(_currentHealth, MaxHealth);
 
+        // Красная вспышка на игроке
+        if (settings != null)
+            settings.FlashRed();
+
         if (_currentHealth <= 0)
             Die();
     }
@@ -80,7 +84,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void GameOver()
     {
-        StartCoroutine(LoadMainMenuAfterDelay(2f)); // 2 секунды задержки
+        StartCoroutine(LoadMainMenuAfterDelay(2f));
     }
 
     private IEnumerator LoadMainMenuAfterDelay(float delay)
