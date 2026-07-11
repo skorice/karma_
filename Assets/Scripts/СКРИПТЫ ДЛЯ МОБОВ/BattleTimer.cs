@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BattleTimer : MonoBehaviour
 {
     [Header("Arena")]
-    [SerializeField] private string arenaSceneName = "Arena";
+    [SerializeField] private string arenaSceneName = "KoryArena";
 
     [Header("Timer")]
     [SerializeField] private float battleDuration = 90f;
