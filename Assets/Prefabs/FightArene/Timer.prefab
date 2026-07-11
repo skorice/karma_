@@ -70,7 +70,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -247.99997, y: -178}
+  m_AnchoredPosition: {x: -185.7, y: -190.3}
   m_SizeDelta: {x: 160, y: 22.675}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &8250929686175641733
@@ -208,8 +208,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -248, y: -158}
-  m_SizeDelta: {x: 160, y: 20}
+  m_AnchoredPosition: {x: -185.7, y: -145.7}
+  m_SizeDelta: {x: 228.1049, y: 39.2387}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &5276453143445109931
 MonoBehaviour:
@@ -453,6 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee09848521d7444f9605302d63d02e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleTimer
+  arenaSceneName: KoryArena
   battleDuration: 90
   timerText: {fileID: 6865516530075255139}
   timerSlider: {fileID: 5276453143445109931}
