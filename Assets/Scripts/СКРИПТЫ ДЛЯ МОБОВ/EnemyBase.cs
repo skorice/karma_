@@ -16,7 +16,7 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] protected int karmaValue = 1;
 
     [Header("Stun")]
-    [SerializeField] protected float stunDuration = 0.5f; // длительность заморозки
+    [SerializeField] protected float stunDuration = 0.5f;
 
     protected float currentHealth;
     protected Transform player;
@@ -26,7 +26,6 @@ public class EnemyBase : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     private Color originalColor;
 
-    // Для стауна
     private bool isStunned;
     private float stunTimer;
 
@@ -42,26 +41,18 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        // Обновляем стаун
         if (isStunned)
         {
             stunTimer -= Time.deltaTime;
-            if (stunTimer <= 0)
-            {
-                isStunned = false;
-                // Можно добавить лог для отладки
-                // Debug.Log($"{name} вышел из стауна");
-            }
-            // Если в стауне — не двигаемся и не атакуем
-            return;
+            if (stunTimer <= 0) isStunned = false;
+            return; // в стауне ничего не делаем
         }
 
         if (player == null) return;
 
         Move();
         attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0)
-            TryAttack();
+        if (attackTimer <= 0) TryAttack();
     }
 
     protected virtual void Move()
@@ -93,14 +84,10 @@ public class EnemyBase : MonoBehaviour
         if (currentHealth <= 0) return;
         currentHealth -= amount;
 
-        // Визуальный эффект (красная вспышка)
         StartCoroutine(FlashRed());
-
-        // Стаун (заморозка)
         ApplyStun();
 
-        if (currentHealth <= 0)
-            Die();
+        if (currentHealth <= 0) Die();
     }
 
     private void ApplyStun()
