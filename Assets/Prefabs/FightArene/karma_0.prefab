@@ -105,7 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30bacddbea474a14195ce08406e6e934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KarmaDrop
-  destroyTime: 8.4
+  destroyTime: 16
+  pickupDelay: 0.1
   minValue: 1
   maxValue: 5
 --- !u!58 &4670996059585187205

@@ -180,11 +180,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Naga
   maxHealth: 50
-  moveSpeed: 100
+  moveSpeed: 84
   damage: 5
   attackRadius: 10
   attackCooldown: 1
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
+  stunDuration: 0.5
   snakeTrailPrefab: {fileID: 6295234124727406500, guid: b403cd01bc7488e43b905ccbddfa1b97, type: 3}
   trailCooldown: 5

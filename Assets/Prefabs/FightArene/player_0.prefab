@@ -363,17 +363,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e4800313d8bf548b471ae183c62e6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSettings
-  BASEmoveSpeed: 120
+  BASEmoveSpeed: 145
   BASEattackPower: 20
-  BASEattackSpeed: 0.6
+  BASEattackSpeed: 1.4
   BASEplayerHealth: 200
   BASElives: 3
   BUFFmoveSpeed: 0.1
-  BUFFattackPower: 0.5
-  BUFFattackSpeed: 0.05
+  BUFFattackPower: 3
+  BUFFattackSpeed: -0.1
   BUFFplayerHealth: 50
   currentLevel: 1
-  debuffOverlay: {fileID: 8647961459945934959, guid: 9d5d86f8014e8914186d79bfd0a7280e, type: 3}
 --- !u!114 &3620493790402398058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,9 +425,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47173e31df7baac439b4f1e7268ba73d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelManager
-  baseKarmaForLevel: 10
-  karmaMultiplier: 1.5
+  playerSettings: {fileID: 0}
   levelSlider: {fileID: 146324889168107152, guid: a70cb43489ba4014aa37055ac08958f3, type: 3}
+  baseXP: 10
+  xpMultiplier: 1.5
 --- !u!1 &6365238508105053775
 GameObject:
   m_ObjectHideFlags: 0
