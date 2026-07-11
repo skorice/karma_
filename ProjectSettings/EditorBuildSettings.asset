@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Anomaly.unity
     guid: d99a194e45ddd94479869958de3c3fb7
+  - enabled: 1
+    path: Assets/Scenes/KoryArena.unity
+    guid: 9325bb34cb4e0144db4610cab78b585b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

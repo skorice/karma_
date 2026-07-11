@@ -10,7 +10,7 @@ public class CaveManager : MonoBehaviour
     private int currentAttempts = 0;
     
     [Header("Настройки сцен")]
-    public string FightArene = "FightArene";
+    public string KoryArena = "KoryArena";
     public string Anomaly = "Anomaly";
     
     [Header("Очки удачи")]
@@ -57,13 +57,13 @@ public class CaveManager : MonoBehaviour
         }
 
         //  ПЕРЕХОД В СЦЕНУ БОЯ
-        Invoke(nameof(GoToFightArene), 1f);
+        Invoke(nameof(GoToKoryArena), 1f);
     }
 
-    public void GoToFightArene()
+    public void GoToKoryArena()
     {
-        Debug.Log($"Переход в сцену боя: {FightArene}");
-        SceneManager.LoadScene(FightArene);
+        Debug.Log($"Переход в сцену боя: {KoryArena}");
+        SceneManager.LoadScene(KoryArena);
     }
 
     public void GoToCaveScene()
@@ -114,7 +114,7 @@ public class CaveManager : MonoBehaviour
         }
 
         //  ПОСЛЕ РАСЧЁТА БАФФОВ — БОЙ
-        Invoke(nameof(GoToFightArene), 1.5f);
+        Invoke(nameof(GoToKoryArena), 1.5f);
     }
 
     private void RollBuff(string slotName, int rarePercent, int epicPercent)
