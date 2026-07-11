@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Settings.unity
     guid: 0134707f3aa5396458f855773d03f73e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FightArene.unity
     guid: 958bd39ed4e4aa946a8801249aea9395
   - enabled: 1
@@ -23,6 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/KoryArena.unity
     guid: 9325bb34cb4e0144db4610cab78b585b
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+    guid: 32d5d8508434aee49adddd92cfb9cb6d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
