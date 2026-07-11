@@ -3,7 +3,7 @@ using UnityEngine;
 public class KarmaDrop : MonoBehaviour
 {
     [SerializeField] private float destroyTime = 8.4f;
-    [SerializeField] private float pickupDelay = 0.5f; // Задержка перед подбором
+    [SerializeField] private float pickupDelay = 0.5f;
     [SerializeField] private int minValue = 1;
     [SerializeField] private int maxValue = 5;
 
@@ -31,11 +31,10 @@ public class KarmaDrop : MonoBehaviour
 
     private void Update()
     {
-        // Проверяем, прошла ли задержка
         if (!canPickup && Time.time - spawnTime >= pickupDelay)
         {
             canPickup = true;
-            Debug.Log($"⏳ Карма готова к подбору! (задержка {pickupDelay}с)");
+            Debug.Log($"Карма готова к подбору! (задержка {pickupDelay}с)");
         }
     }
 
@@ -44,23 +43,23 @@ public class KarmaDrop : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        // Если задержка не прошла — игнорируем
         if (!canPickup)
         {
-            Debug.Log($"⏳ Карма ещё не готова! Подождите {pickupDelay - (Time.time - spawnTime):F1}с");
+            Debug.Log($"Карма ещё не готова! Подождите {pickupDelay - (Time.time - spawnTime):F1}с");
             return;
         }
 
-        PlayerLevelManager levelManager = other.GetComponent<PlayerLevelManager>();
+        // Ищем PlayerLevelManager в сцене
+        PlayerLevelManager levelManager = FindFirstObjectByType<PlayerLevelManager>();
 
         if (levelManager != null)
         {
             levelManager.AddKarma(value);
-            Debug.Log($"💎 Игрок подобрал {value} кармы! Всего: {levelManager.GetCurrentKarma()}, Уровень: {levelManager.GetCurrentLevel()}");
+            Debug.Log($" Игрок подобрал {value} кармы!");
         }
         else
         {
-            Debug.LogWarning("⚠️ У игрока нет компонента PlayerLevelManager!");
+            Debug.LogWarning(" PlayerLevelManager не найден!");
         }
 
         Destroy(gameObject);
