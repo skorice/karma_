@@ -35,7 +35,7 @@ public class BattleTimer : MonoBehaviour
     [Header("Portal")]
     [SerializeField] private GameObject portalPrefab;
     [SerializeField] private Transform portalSpawnPosition;
-    [SerializeField] private string nextSceneName = "Anomaly";
+    [SerializeField] private string nextSceneName = "Cave1";
 
     private float timer;
     private float waveTimer;
