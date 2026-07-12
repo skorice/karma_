@@ -3,6 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField] private float acceleration = 80f; // высокий = почти мгновенно
+    [SerializeField] private float deceleration = 100f;
+    
     private PlayerSettings settings;
     private Rigidbody2D body;
     private InputReader input;
@@ -26,18 +29,18 @@ public class PlayerMove : MonoBehaviour
 
     private void Move()
     {
-        Vector2 movement = input.MovementInput;
+        Vector2 move = input.MovementInput;
+        Vector2 targetVelocity = Vector2.zero;
 
-        if (movement.magnitude > 0.1f)
-        {
-            Vector2 newPos = body.position + movement.normalized * settings.MoveSpeed * Time.fixedDeltaTime;
-            body.MovePosition(newPos);
-        }
-        else
-        {
-            body.linearVelocity = Vector2.zero;
-        }
+        if (move.sqrMagnitude > 0.01f)
+            targetVelocity = move.normalized * settings.MoveSpeed;
+
+        // Быстрый разгон / ещё более быстрое торможение
+        float accel = targetVelocity.sqrMagnitude > 0.01f ? acceleration : deceleration;
+        body.linearVelocity = Vector2.MoveTowards(
+            body.linearVelocity,
+            targetVelocity,
+            accel * Time.fixedDeltaTime
+        );
     }
-
-    public bool IsMoving => input.MovementInput.magnitude > 0.1f;
 }
