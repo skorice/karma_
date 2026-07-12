@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 108681857169210393, guid: c4b55b4c3f3e52247a24c43e60890396, type: 3}
       propertyPath: m_Size.y
-      value: 201.8471
+      value: 757.3391
       objectReference: {fileID: 0}
     - target: {fileID: 108681857169210393, guid: c4b55b4c3f3e52247a24c43e60890396, type: 3}
       propertyPath: m_Offset.x
@@ -141,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 108681857169210393, guid: c4b55b4c3f3e52247a24c43e60890396, type: 3}
       propertyPath: m_Offset.y
-      value: -139.97263
+      value: 137.77338
       objectReference: {fileID: 0}
     - target: {fileID: 2565095263666270705, guid: c4b55b4c3f3e52247a24c43e60890396, type: 3}
       propertyPath: caveState
@@ -403,7 +403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8913465321858279521, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_Size.y
-      value: 116.331154
+      value: 564.63464
       objectReference: {fileID: 0}
     - target: {fileID: 8913465321858279521, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_Enabled
@@ -415,7 +415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8913465321858279521, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_Offset.y
-      value: 120.74266
+      value: -103.40924
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4210385096195668420, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
