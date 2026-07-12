@@ -491,6 +491,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6143573207420797495, guid: 6ec25fcd1306ed74792cd3d74c89768e, type: 3}
+      propertyPath: m_Size.x
+      value: 0.89861465
+      objectReference: {fileID: 0}
+    - target: {fileID: 6143573207420797495, guid: 6ec25fcd1306ed74792cd3d74c89768e, type: 3}
+      propertyPath: m_Size.y
+      value: 1.015153
+      objectReference: {fileID: 0}
+    - target: {fileID: 6143573207420797495, guid: 6ec25fcd1306ed74792cd3d74c89768e, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.59141374
+      objectReference: {fileID: 0}
+    - target: {fileID: 6143573207420797495, guid: 6ec25fcd1306ed74792cd3d74c89768e, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.3257982
+      objectReference: {fileID: 0}
     - target: {fileID: 7880231329281771186, guid: 6ec25fcd1306ed74792cd3d74c89768e, type: 3}
       propertyPath: m_Name
       value: CaveState
