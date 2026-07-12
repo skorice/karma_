@@ -417,7 +417,7 @@ MonoBehaviour:
   BASEplayerHealth: 200
   BASElives: 3
   BUFFmoveSpeed: 0.1
-  BUFFattackPower: 3
+  BUFFattackPower: 2
   BUFFattackSpeed: -0.1
   BUFFplayerHealth: 50
   currentLevel: 1

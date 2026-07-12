@@ -179,8 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68749644d0c20b4e835c1d10fec0aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rakshasa
-  maxHealth: 65
+  maxHealth: 85
   moveSpeed: 42
+  turnSpeed: 4
   damage: 9
   attackRadius: 10
   attackCooldown: 1.2

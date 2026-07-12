@@ -458,7 +458,7 @@ MonoBehaviour:
   timerText: {fileID: 6865516530075255139}
   timerSlider: {fileID: 5276453143445109931}
   spawner: {fileID: -3490368182473847706, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
-  waveInterval: 20
+  waveInterval: 15
   baseCount: 3
   levelStartAdd: 2
   baseWaveAdd: 0
