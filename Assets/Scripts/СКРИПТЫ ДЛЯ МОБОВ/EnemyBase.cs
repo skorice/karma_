@@ -63,12 +63,6 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Move()
     {
-        //transform.position = Vector2.MoveTowards(
-        //    transform.position,
-        //    player.position,
-        //    moveSpeed * Time.deltaTime
-        //);
-
         // Желаемая скорость — направление к игроку на полной скорости
         Vector2 desiredDirection = ((Vector2)player.position - (Vector2)transform.position).normalized;
         Vector2 desiredVelocity = desiredDirection * moveSpeed;
@@ -115,8 +109,8 @@ public class EnemyBase : MonoBehaviour
     private IEnumerator FlashRed()
     {
         if (spriteRenderer == null) yield break;
-        spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 0.7f);
-        yield return new WaitForSeconds(0.15f);
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.25f);
         spriteRenderer.color = originalColor;
     }
 

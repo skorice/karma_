@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8878280960156390244}
   - component: {fileID: 6332022206366058469}
   - component: {fileID: 4670996059585187205}
+  - component: {fileID: 698978042934881292}
   m_Layer: 0
   m_Name: karma_0
   m_TagString: Untagged
@@ -109,6 +110,9 @@ MonoBehaviour:
   pickupDelay: 0.1
   minValue: 1
   maxValue: 5
+  attractionRadius: 100
+  homingStepDuration: 0.08
+  collectDistance: 0.15
 --- !u!58 &4670996059585187205
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -145,3 +149,18 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.3
+--- !u!114 &698978042934881292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4677157132815447361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd5ec8e53644c66995240f7ea718f65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectiblePulse
+  scaleMultiplier: 1.14
+  pulseDuration: 0.6
+  randomizeStart: 1
