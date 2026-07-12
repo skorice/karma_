@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1913364642897615079}
   - component: {fileID: 2952280885004734163}
   - component: {fileID: 4935986997719743762}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 6963755685028039845}
   - component: {fileID: 2773605913520515644}
   - component: {fileID: 6296684403602468471}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7662603336343739887}
   - component: {fileID: 5071593061667463577}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Aura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 6822949042525345050}
   - component: {fileID: 8356703790284973640}
   - component: {fileID: -1425232823223174921}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: player_0
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -461,6 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   settings: {fileID: 1754953996361796525}
   healthBar: {fileID: 1504531458627152313}
+  respawnPoint: {fileID: 0}
 --- !u!114 &-1425232823223174921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,8 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47173e31df7baac439b4f1e7268ba73d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelManager
-  playerSettings: {fileID: 0}
-  levelSlider: {fileID: 146324889168107152, guid: a70cb43489ba4014aa37055ac08958f3, type: 3}
+  playerSettings: {fileID: 1754953996361796525}
+  levelSlider: {fileID: 0}
   baseXP: 10
   xpMultiplier: 1.5
 --- !u!1 &6365238508105053775
@@ -488,7 +489,7 @@ GameObject:
   - component: {fileID: 8682027183155726405}
   - component: {fileID: 3503429356252981602}
   - component: {fileID: 2147392073287034922}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,7 +536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.20754719, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -561,7 +562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4118343187920578169}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -599,8 +600,8 @@ GameObject:
   - component: {fileID: 4737115612199905646}
   - component: {fileID: 6133620936008103039}
   - component: {fileID: 1504531458627152313}
-  m_Layer: 5
-  m_Name: Slider
+  m_Layer: 7
+  m_Name: HpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
