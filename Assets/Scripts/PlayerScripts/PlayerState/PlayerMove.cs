@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);   
         body = GetComponent<Rigidbody2D>();
         settings = GetComponent<PlayerSettings>();
         input = new InputReader();
