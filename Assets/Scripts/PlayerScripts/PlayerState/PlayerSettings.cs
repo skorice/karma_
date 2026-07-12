@@ -19,14 +19,17 @@ public class PlayerSettings : MonoBehaviour
     [Header("Текущий уровень")]
     [SerializeField] private int currentLevel = 1;
 
+    // Дебаффы
     private float _slowMultiplier = 1f;
     private float _attackPowerDebuff = 1f;
 
+    // Цветовые эффекты
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
-    private Color baseColor; // текущий "базовый" цвет (оригинал или зелёный)
+    private Color baseColor;
     private Coroutine flashCoroutine;
 
+    // Публичные свойства (статы)
     public int playerLvl => currentLevel;
     public float MoveSpeed => (BASEmoveSpeed + (currentLevel - 1) * BUFFmoveSpeed) * _slowMultiplier;
     public float AttackPower => (BASEattackPower + (currentLevel - 1) * BUFFattackPower) * _attackPowerDebuff;
@@ -37,6 +40,14 @@ public class PlayerSettings : MonoBehaviour
 
     private void Start()
     {
+        // 1. Загружаем уровень из глобального менеджера
+        if (GameDataManager.Instance != null)
+        {
+            currentLevel = GameDataManager.Instance.CurrentLevel;
+            Debug.Log($"📥 Уровень загружен из GameDataManager: {currentLevel}");
+        }
+
+        // 2. Инициализация спрайта для эффектов
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
@@ -45,17 +56,44 @@ public class PlayerSettings : MonoBehaviour
         }
     }
 
+    // ----- Статы и прокачка -----
     public float TakeDamage(float damage) { return Health - damage; }
 
     public float NewLevel()
     {
         currentLevel++;
+        // Сохраняем в глобальный менеджер
+        if (GameDataManager.Instance != null)
+            GameDataManager.Instance.CurrentLevel = currentLevel;
+
+        Debug.Log($"⬆️ Уровень повышен до {currentLevel}");
+        DebugStats();
+
+        // ✅ Восстанавливаем здоровье до максимума
+        PlayerHealth health = GetComponent<PlayerHealth>();
+        if (health != null)
+        {
+            health.HealToMax();
+            Debug.Log("❤️ Здоровье восстановлено до максимума!");
+        }
+
         return BASEplayerHealth + (currentLevel - 1) * BUFFplayerHealth;
     }
 
     public void LoseLevel()
     {
         currentLevel = Mathf.Max(1, currentLevel - 1);
+        if (GameDataManager.Instance != null)
+            GameDataManager.Instance.CurrentLevel = currentLevel;
+        Debug.Log($"⬇️ Уровень понижен до {currentLevel}");
+    }
+
+    public void SetLevel(int newLevel)
+    {
+        currentLevel = Mathf.Max(1, newLevel);
+        if (GameDataManager.Instance != null)
+            GameDataManager.Instance.CurrentLevel = currentLevel;
+        Debug.Log($"📤 Уровень установлен на {currentLevel}");
     }
 
     public int newLive(int count)
@@ -63,15 +101,16 @@ public class PlayerSettings : MonoBehaviour
         return BASElives + count;
     }
 
+    // ----- Дебафф Наги (зелёный) -----
     public void ApplySnakeDebuff()
     {
         _slowMultiplier = 0.8f;
         _attackPowerDebuff = 0.9f;
-        Debug.Log("Snake debuff applied");
+        Debug.Log("🐍 Дебафф Наги: скорость -20%, атака -10%");
 
         if (spriteRenderer != null)
         {
-            baseColor = new Color(0f, 1f, 0f, 1f); // зелёный, 30% прозрачности
+            baseColor = new Color(0f, 1f, 0f, 1f);
             spriteRenderer.color = baseColor;
         }
     }
@@ -80,7 +119,7 @@ public class PlayerSettings : MonoBehaviour
     {
         _slowMultiplier = 1f;
         _attackPowerDebuff = 1f;
-        Debug.Log("Snake debuff removed");
+        Debug.Log("✅ Дебафф Наги снят");
 
         if (spriteRenderer != null)
         {
@@ -89,7 +128,7 @@ public class PlayerSettings : MonoBehaviour
         }
     }
 
-    // Красная вспышка при получении урона
+    // ----- Красная вспышка при получении урона -----
     public void FlashRed()
     {
         if (spriteRenderer == null) return;
@@ -99,19 +138,20 @@ public class PlayerSettings : MonoBehaviour
 
     private IEnumerator FlashRedCoroutine()
     {
-        // Сохраняем текущий базовый цвет (оригинал или зелёный)
         Color targetColor = baseColor;
-        // Устанавливаем красный полупрозрачный
         spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 1f);
         yield return new WaitForSeconds(0.15f);
-        // Возвращаем базовый цвет
         spriteRenderer.color = targetColor;
         flashCoroutine = null;
     }
 
-    public void SetLevel(int newLevel)
+    // ----- Отладка -----
+    public void DebugStats()
     {
-        currentLevel = Mathf.Max(1, newLevel);
-        Debug.Log($"Уровень установлен на: {currentLevel}");
+        Debug.Log($"📊 Уровень: {currentLevel}");
+        Debug.Log($"🏃 Скорость: {MoveSpeed:F2}");
+        Debug.Log($"⚔️ Сила атаки: {AttackPower:F2}");
+        Debug.Log($"⏱️ Скорость атаки: {AttackSpeed:F2}");
+        Debug.Log($"❤️ Здоровье: {Health:F0}");
     }
 }
