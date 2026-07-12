@@ -411,9 +411,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e4800313d8bf548b471ae183c62e6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSettings
-  BASEmoveSpeed: 145
-  BASEattackPower: 15
-  BASEattackSpeed: 1.4
+  BASEmoveSpeed: 160
+  BASEattackPower: 7
+  BASEattackSpeed: 0.5
   BASEplayerHealth: 200
   BASElives: 3
   BUFFmoveSpeed: 0.1
@@ -433,6 +433,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cd8c49c46b549d4aa463e2530473cb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
+  acceleration: 600
+  deceleration: 600
 --- !u!114 &6822949042525345050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,7 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6352318acd5df1e4b83e922866ca3d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFight
-  _attackRadius: 3
+  _attackRadius: 5
   _damageRadiusVfx: {fileID: 5071593061667463577}
 --- !u!114 &8356703790284973640
 MonoBehaviour:
@@ -477,7 +479,7 @@ MonoBehaviour:
   playerSettings: {fileID: 1754953996361796525}
   levelSlider: {fileID: 0}
   baseXP: 10
-  xpMultiplier: 3.5
+  xpMultiplier: 1.5
 --- !u!1 &6365238508105053775
 GameObject:
   m_ObjectHideFlags: 0
