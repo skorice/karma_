@@ -179,8 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e3eded53348895489dcb13db9db1ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Kimnara
-  maxHealth: 50
+  maxHealth: 65
   moveSpeed: 65
+  turnSpeed: 4
   damage: 5
   attackRadius: 10
   attackCooldown: 1
