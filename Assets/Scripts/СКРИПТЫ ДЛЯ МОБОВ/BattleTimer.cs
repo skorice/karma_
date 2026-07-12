@@ -11,8 +11,11 @@ public class BattleTimer : MonoBehaviour
     [Header("Timer")]
     [SerializeField] private float battleDuration = 90f;
 
+    [Header("Start Delay")]
+    [SerializeField] private float startDelay = 3f;
+
     [Header("UI")]
-    [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text timerText;   // текст для отображения времени и обратного отсчёта
     [SerializeField] private Slider timerSlider;
 
     [Header("Spawn")]
@@ -20,16 +23,9 @@ public class BattleTimer : MonoBehaviour
     [SerializeField] private float waveInterval = 25f;
 
     [Header("Wave Settings")]
-    [Tooltip("Базовое количество врагов в первой волне")]
     [SerializeField] private int baseCount = 2;
-
-    [Tooltip("Дополнительные враги за каждый уровень игрока")]
     [SerializeField] private int levelStartAdd = 2;
-
-    [Tooltip("Дополнительные враги за каждую волну (не зависит от уровня)")]
     [SerializeField] private int baseWaveAdd = 0;
-
-    [Tooltip("Дополнительные враги за каждую волну, умноженные на уровень")]
     [SerializeField] private int levelWaveAdd = 1;
 
     [Header("Portal")]
@@ -39,19 +35,18 @@ public class BattleTimer : MonoBehaviour
 
     private float timer;
     private float waveTimer;
-
     private bool battleFinished;
-
     private int waveIndex;
     private int currentWaveCount;
-
     private PlayerSettings playerSettings;
     private GameObject spawnedPortal;
 
+    // Для задержки
+    private bool isDelaying;
+    private float delayTimer;
 
     private void Start()
     {
-        // Бой только на арене
         if (SceneManager.GetActiveScene().name != arenaSceneName)
         {
             enabled = false;
@@ -68,18 +63,68 @@ public class BattleTimer : MonoBehaviour
 
         playerSettings = FindFirstObjectByType<PlayerSettings>();
 
-        waveIndex = 0;
-        currentWaveCount = GetWaveCount(waveIndex);
-        waveTimer = waveInterval;
-
-        StartBattle();
+        // Начинаем задержку
+        isDelaying = true;
+        delayTimer = startDelay;
+        UpdateTimerDisplay(); // показываем начальный отсчёт
+        Debug.Log($"⏳ Обратный отсчёт: {startDelay} секунд до начала боя");
     }
 
+    private void Update()
+    {
+        if (battleFinished) return;
+
+        // --- Фаза задержки ---
+        if (isDelaying)
+        {
+            delayTimer -= Time.deltaTime;
+            UpdateTimerDisplay(); // обновляем текст обратного отсчёта
+
+            if (delayTimer <= 0)
+            {
+                isDelaying = false;
+                timerText.text = "GO!";
+                StartBattle();
+                Debug.Log("⚔️ Бой начался!");
+                // Через 0.5 секунды убираем "GO!" и показываем нормальное время
+                Invoke(nameof(ResetTimerDisplay), 0.5f);
+            }
+            return;
+        }
+
+        // --- Основной цикл боя ---
+        timer -= Time.deltaTime;
+
+        if (timer <= 0)
+        {
+            timer = 0;
+            UpdateUI();
+            EndBattle();
+            return;
+        }
+
+        UpdateUI();
+
+        if (spawner != null)
+        {
+            waveTimer -= Time.deltaTime;
+            if (waveTimer <= 0)
+            {
+                spawner.SpawnWaveWithTypes(waveIndex, currentWaveCount);
+                waveIndex++;
+                currentWaveCount = GetWaveCount(waveIndex);
+                waveTimer = waveInterval;
+            }
+        }
+    }
 
     private void StartBattle()
     {
-        if (spawner == null)
-            return;
+        if (spawner == null) return;
+
+        waveIndex = 0;
+        currentWaveCount = GetWaveCount(waveIndex);
+        waveTimer = waveInterval;
 
         spawner.StartSpawning();
         spawner.SpawnWaveWithTypes(waveIndex, currentWaveCount);
@@ -88,128 +133,84 @@ public class BattleTimer : MonoBehaviour
         currentWaveCount = GetWaveCount(waveIndex);
     }
 
-
-    private void Update()
-    {
-        if (battleFinished)
-            return;
-
-
-        timer -= Time.deltaTime;
-
-        if (timer <= 0)
-        {
-            timer = 0;
-            UpdateUI();
-
-            EndBattle();
-            return;
-        }
-
-
-        UpdateUI();
-
-
-        if (spawner != null)
-        {
-            waveTimer -= Time.deltaTime;
-
-            if (waveTimer <= 0)
-            {
-                spawner.SpawnWaveWithTypes(waveIndex, currentWaveCount);
-
-                waveIndex++;
-                currentWaveCount = GetWaveCount(waveIndex);
-
-                waveTimer = waveInterval;
-            }
-        }
-    }
-
-
     private int GetWaveCount(int wave)
     {
-        int level = playerSettings != null 
-            ? (int)playerSettings.Level 
-            : 1;
-
-        return baseCount 
-            + level * levelStartAdd 
-            + wave * (baseWaveAdd + level * levelWaveAdd);
+        int level = playerSettings != null ? (int)playerSettings.Level : 1;
+        return baseCount
+             + level * levelStartAdd
+             + wave * (baseWaveAdd + level * levelWaveAdd);
     }
 
-
+    // Обновление UI (основной таймер)
     private void UpdateUI()
     {
         if (timerSlider != null)
             timerSlider.value = timer;
 
-
-        if (timerText != null)
+        if (timerText != null && !isDelaying)
         {
             int minutes = Mathf.FloorToInt(timer / 60);
             int seconds = Mathf.FloorToInt(timer % 60);
-
             timerText.text = $"{minutes:00}:{seconds:00}";
         }
     }
 
+    // Обновление текста во время обратного отсчёта
+    private void UpdateTimerDisplay()
+    {
+        if (timerText == null) return;
+
+        if (isDelaying)
+        {
+            int seconds = Mathf.CeilToInt(delayTimer);
+            timerText.text = seconds > 0 ? $"{seconds}" : "GO!";
+        }
+    }
+
+    // Сброс текста после "GO!" на нормальный таймер
+    private void ResetTimerDisplay()
+    {
+        if (!isDelaying && timerText != null)
+        {
+            UpdateUI();
+        }
+    }
 
     private void EndBattle()
     {
         battleFinished = true;
-
         if (spawner != null)
             spawner.StopSpawning();
 
-
         Debug.Log("Битва окончена. Спавн портала...");
-
         SpawnPortal();
-
         enabled = false;
     }
-
 
     private void SpawnPortal()
     {
         if (portalPrefab == null)
         {
-            Debug.LogError(" Portal Prefab не назначен!");
+            Debug.LogError("❌ Portal Prefab не назначен!");
             return;
         }
-
 
         if (portalSpawnPosition == null)
         {
-            Debug.LogError(
-                "Не назначена позиция появления портала!"
-            );
+            Debug.LogError("❌ Не назначена позиция появления портала!");
             return;
         }
 
-
-        spawnedPortal = Instantiate(
-            portalPrefab,
-            portalSpawnPosition.position,
-            Quaternion.identity
-        );
-
-        Debug.Log(
-            $" Портал заспавнен: {portalSpawnPosition.position}"
-        );
+        spawnedPortal = Instantiate(portalPrefab, portalSpawnPosition.position, Quaternion.identity);
+        Debug.Log($"🌀 Портал заспавнен: {portalSpawnPosition.position}");
     }
-
 
     private void OnDrawGizmosSelected()
     {
         if (portalSpawnPosition != null)
         {
             Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(
-                portalSpawnPosition.position,
-                1f
-            );
+            Gizmos.DrawWireSphere(portalSpawnPosition.position, 1f);
         }
     }
 }
