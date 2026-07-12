@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2188042999393757364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8389516123675613446}
+  - component: {fileID: 2529769892298965927}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8389516123675613446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188042999393757364}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -77.40513, y: -54.64169, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2529769892298965927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188042999393757364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b720209e06fdb341a4796eb91991809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  musicSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  musicMainMenu: {fileID: 8300000, guid: 4b54f28963aa91446a2970bedc0b3f24, type: 3}
+  musicBattle: {fileID: 8300000, guid: 4b54f28963aa91446a2970bedc0b3f24, type: 3}
+  musicAnomaly: {fileID: 8300000, guid: d9ee86c210b66644189ef630b918c722, type: 3}
+  sfxStartFight: {fileID: 8300000, guid: 55b9c9ab0b1fc0f46b6c3f988623d8d3, type: 3}
+  sfxLevelUp: {fileID: 8300000, guid: 52e01001f52c99f4289d6a4af7c990cd, type: 3}
+  sfxHarp: {fileID: 8300000, guid: 405f470bd998b7f42b3e2a4a148b7ad0, type: 3}
+  sfxPortal: {fileID: 8300000, guid: 18a5188dc46aaeb4dbd82fde0e17487d, type: 3}
+  sfxAttack1: {fileID: 8300000, guid: b76ee2fbf89a6ed4caa24b91d935eea1, type: 3}
+  sfxAttack2: {fileID: 8300000, guid: 4e8a63fe8eb02824aa1092532546cdf5, type: 3}
+  sfxDeath: {fileID: 8300000, guid: f2e70dc86d9255a4e941589c59ee4e9a, type: 3}
+  musicVolume: 0.5
+  sfxVolume: 0.8
