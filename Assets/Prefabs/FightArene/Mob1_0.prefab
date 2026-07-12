@@ -179,13 +179,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a757ab0be4d1340a9eb62413e1a9d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Daitya
-  maxHealth: 50
-  moveSpeed: 110
+  maxHealth: 65
+  moveSpeed: 128
   turnSpeed: 4
-  damage: 5
-  attackRadius: 10
-  attackCooldown: 1.2
+  damage: 10
+  attackRadius: 5.8
+  attackCooldown: 0.05
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
-  stunDuration: 0.5
+  stunDuration: 0.1
   damageReduction: 0.15

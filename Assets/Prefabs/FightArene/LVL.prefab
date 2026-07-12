@@ -86,8 +86,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelManager
   playerSettings: {fileID: 1754953996361796525, guid: ad0c21d2e73da0549b45b8ad482320cf, type: 3}
   levelSlider: {fileID: 8509807604418475531}
-  baseXP: 10
-  xpMultiplier: 1.5
+  baseXP: 20
+  xpMultiplier: 3.5
 --- !u!1 &2714180687193909948
 GameObject:
   m_ObjectHideFlags: 0

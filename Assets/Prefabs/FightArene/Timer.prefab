@@ -455,13 +455,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattleTimer
   arenaSceneName: KoryArena
   battleDuration: 60
+  startDelay: 3
   timerText: {fileID: 6865516530075255139}
   timerSlider: {fileID: 5276453143445109931}
   spawner: {fileID: -3490368182473847706, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
   waveInterval: 15
   baseCount: 3
   levelStartAdd: 2
-  baseWaveAdd: 0
+  baseWaveAdd: 1
   levelWaveAdd: 1
   portalPrefab: {fileID: 496440187050923925, guid: 62a1e067366c12f43ba1ef4b4aa1286a, type: 3}
   portalSpawnPosition: {fileID: 980765426982802369, guid: fe6a68820a762ce49a89e5bd6fa9b1c9, type: 3}

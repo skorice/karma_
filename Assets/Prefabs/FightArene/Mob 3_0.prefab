@@ -179,15 +179,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68749644d0c20b4e835c1d10fec0aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rakshasa
-  maxHealth: 85
-  moveSpeed: 42
-  turnSpeed: 4
-  damage: 9
-  attackRadius: 10
-  attackCooldown: 1.2
+  maxHealth: 102
+  moveSpeed: 62
+  turnSpeed: 0.3
+  damage: 30
+  attackRadius: 1.8
+  attackCooldown: 0.1
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
-  stunDuration: 0.5
+  stunDuration: 0.1
   projectilePrefab: {fileID: 0}
   shootCooldown: 3
   minDistance: 5

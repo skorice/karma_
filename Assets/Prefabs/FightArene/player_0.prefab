@@ -314,7 +314,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4334783836991956000, guid: a62ea724ff6cc414e9e43ebfd6a9e03e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -412,14 +412,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSettings
   BASEmoveSpeed: 145
-  BASEattackPower: 20
+  BASEattackPower: 15
   BASEattackSpeed: 1.4
   BASEplayerHealth: 200
   BASElives: 3
   BUFFmoveSpeed: 0.1
   BUFFattackPower: 2
   BUFFattackSpeed: -0.1
-  BUFFplayerHealth: 50
+  BUFFplayerHealth: 10
   currentLevel: 1
 --- !u!114 &3620493790402398058
 MonoBehaviour:
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6352318acd5df1e4b83e922866ca3d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFight
-  _attackRadius: 5
+  _attackRadius: 3
   _damageRadiusVfx: {fileID: 5071593061667463577}
 --- !u!114 &8356703790284973640
 MonoBehaviour:
@@ -477,7 +477,7 @@ MonoBehaviour:
   playerSettings: {fileID: 1754953996361796525}
   levelSlider: {fileID: 0}
   baseXP: 10
-  xpMultiplier: 1.5
+  xpMultiplier: 3.5
 --- !u!1 &6365238508105053775
 GameObject:
   m_ObjectHideFlags: 0

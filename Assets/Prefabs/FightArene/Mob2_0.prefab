@@ -179,15 +179,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e3eded53348895489dcb13db9db1ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Kimnara
-  maxHealth: 65
-  moveSpeed: 65
-  turnSpeed: 4
-  damage: 5
+  maxHealth: 18
+  moveSpeed: 96
+  turnSpeed: 0.03
+  damage: 20
   attackRadius: 10
-  attackCooldown: 1
+  attackCooldown: 0.1
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
-  stunDuration: 0.5
+  stunDuration: 0.1
   minDistance: 4
   maxDistance: 6
   projectilePrefab: {fileID: 6296726364500513604, guid: dbbe255532dcdac48bb3cf175cad514f, type: 3}
