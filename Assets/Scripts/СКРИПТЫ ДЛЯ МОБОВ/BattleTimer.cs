@@ -15,7 +15,7 @@ public class BattleTimer : MonoBehaviour
     [SerializeField] private float startDelay = 3f;
 
     [Header("UI")]
-    [SerializeField] private TMP_Text timerText;   // текст для отображения времени и обратного отсчёта
+    [SerializeField] private TMP_Text timerText;
     [SerializeField] private Slider timerSlider;
 
     [Header("Spawn")]
@@ -121,7 +121,9 @@ public class BattleTimer : MonoBehaviour
     private void StartBattle()
     {
         if (spawner == null) return;
+        AudioManager.Instance.PlayStartFight();
 
+        AudioManager.Instance.PlayMusicBattle();
         waveIndex = 0;
         currentWaveCount = GetWaveCount(waveIndex);
         waveTimer = waveInterval;
@@ -200,7 +202,7 @@ public class BattleTimer : MonoBehaviour
             Debug.LogError("❌ Не назначена позиция появления портала!");
             return;
         }
-
+        AudioManager.Instance.PlayPortal();
         spawnedPortal = Instantiate(portalPrefab, portalSpawnPosition.position, Quaternion.identity);
         Debug.Log($"🌀 Портал заспавнен: {portalSpawnPosition.position}");
     }

@@ -39,7 +39,7 @@ public class PlayerLevelManager : MonoBehaviour
         while (currentXP >= GetRequiredXP())
         {
             currentXP -= GetRequiredXP();
-
+            AudioManager.Instance.PlayLevelUp();
             playerSettings.NewLevel();
 
             Debug.Log($"Уровень повышен! Теперь: {playerSettings.playerLvl}");

@@ -81,7 +81,7 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("💀 Игрок умер!");
-
+        AudioManager.Instance.PlayDeath();
         _currentLives--;
         OnLivesChanged?.Invoke(_currentLives);
 

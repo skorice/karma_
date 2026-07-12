@@ -51,6 +51,7 @@ public class PlayerFight : MonoBehaviour
                 if (enemy != null)
                 {
                     enemy.TakeDamage(_settings.AttackPower);
+                    AudioManager.Instance.PlayRandomAttack();
                     Debug.Log($"⚔️ Удар по {hit.name} силой {_settings.AttackPower}");
                 }
             }
