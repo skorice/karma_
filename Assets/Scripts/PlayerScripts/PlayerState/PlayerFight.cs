@@ -35,7 +35,7 @@ public class PlayerFight : MonoBehaviour
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position,
-            _attackRadius * transform.localScale.x
+            _attackRadius
         );
 
         if (hits.Any(e => e.CompareTag("Mob")))
@@ -60,6 +60,6 @@ public class PlayerFight : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, _attackRadius * transform.localScale.x);
+        Gizmos.DrawWireSphere(transform.position, _attackRadius);
     }
 }

@@ -51,14 +51,20 @@ MonoBehaviour:
     isResidual: 0
   - prefab: {fileID: 8405083080745002911, guid: a6717f4c7ebfbf94c96a2bb7f2ec07c6, type: 3}
     waveUnlock: 2
-    quotaPercent: 35
+    quotaPercent: 45
     isResidual: 0
   - prefab: {fileID: 1945390768316672032, guid: 4fd8e6ac94c90c646bb7d94e5490c1e2, type: 3}
     waveUnlock: 3
-    quotaPercent: 25
+    quotaPercent: 55
     isResidual: 0
   - prefab: {fileID: 7697518751647480413, guid: 28e33a1fd966ea14b8d6ffb91739a0ca, type: 3}
     waveUnlock: 4
-    quotaPercent: 20
+    quotaPercent: 25
     isResidual: 0
   player: {fileID: 5973504283338641601, guid: ad0c21d2e73da0549b45b8ad482320cf, type: 3}
+  halfWidth: 30
+  halfHeight: 20
+  mapPadding: 2
+  minimumDistanceFromPlayer: 5
+  minimumDistanceBetweenSpawns: 5
+  positionSearchAttempts: 30

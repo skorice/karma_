@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 /// <summary>
@@ -6,13 +7,6 @@ using UnityEngine;
 /// </summary>
 public class MovementSquashStretch : MonoBehaviour
 {
-    [Header("Sources")]
-    [Tooltip("Откуда брать скорость. Если null — ищет Rigidbody2D на себе/родителе.")]
-    [SerializeField] private Rigidbody2D body;
-
-    [Tooltip("Если нет Rigidbody — можно скармливать velocity снаружи через SetVelocity().")]
-    [SerializeField] private bool useExternalVelocity;
-
     [Header("Idle breath")]
     [SerializeField] private float idleBreathAmount = 0.03f; // 3%
     [SerializeField] private float idleBreathSpeed = 2.2f;
@@ -20,7 +14,7 @@ public class MovementSquashStretch : MonoBehaviour
     [Header("Run pulse")]
     [SerializeField] private float runPulseAmount = 0.08f;   // сила сжатия/разжатия
     [SerializeField] private float runPulseSpeed = 10f;      // частота "шагов"
-    [SerializeField] private float minSpeedToAnimate = 0.15f;
+    // [SerializeField] private float minSpeedToAnimate = 0.15f;
 
     [Header("Move stretch")]
     [Tooltip("Лёгкое вытягивание по направлению движения.")]
@@ -30,15 +24,11 @@ public class MovementSquashStretch : MonoBehaviour
     [SerializeField] private float scaleLerpSpeed = 18f;
 
     private Vector3 baseScale;
-    private Vector2 externalVelocity;
     private float pulseTimer;
 
     private void Awake()
     {
         baseScale = transform.localScale;
-
-        if (body == null && !useExternalVelocity)
-            body = GetComponentInParent<Rigidbody2D>();
     }
 
     private void LateUpdate()
@@ -46,45 +36,35 @@ public class MovementSquashStretch : MonoBehaviour
         Vector2 velocity = GetVelocity();
         float speed = velocity.magnitude;
 
+        if (Mathf.Approximately(speed, 0f))
+        {
+            return;
+        }
+        
         // 1) Базовый пульс
         Vector3 targetScale = baseScale;
+        
+        // "шаги": вверх-вниз по синусу
+        pulseTimer += Time.deltaTime * runPulseSpeed;
 
-        if (speed > minSpeedToAnimate)
-        {
-            // "шаги": вверх-вниз по синусу
-            pulseTimer += Time.deltaTime * runPulseSpeed;
+        // sin: -1..1 → squash Y / stretch X
+        float wave = Mathf.Sin(pulseTimer);
 
-            // sin: -1..1 → squash Y / stretch X
-            float wave = Mathf.Sin(pulseTimer);
+        float squashY = 1f - wave * runPulseAmount;
+        float stretchX = 1f + wave * runPulseAmount;
 
-            float squashY = 1f - wave * runPulseAmount;
-            float stretchX = 1f + wave * runPulseAmount;
+        // 2) Лёгкое вытягивание по направлению движения
+        Vector2 dir = velocity / speed; // normalized
+        float face = Mathf.Abs(dir.x);  // больше по X — сильнее горизонтальный stretch
 
-            // 2) Лёгкое вытягивание по направлению движения
-            Vector2 dir = velocity / speed; // normalized
-            float face = Mathf.Abs(dir.x);  // больше по X — сильнее горизонтальный stretch
+        stretchX += face * directionalStretch;
+        squashY  -= face * directionalStretch * 0.5f;
 
-            stretchX += face * directionalStretch;
-            squashY  -= face * directionalStretch * 0.5f;
-
-            targetScale = new Vector3(
-                baseScale.x * stretchX,
-                baseScale.y * squashY,
-                baseScale.z
-            );
-        }
-        else
-        {
-            // idle "дыхание"
-            pulseTimer = 0f;
-            float breath = Mathf.Sin(Time.time * idleBreathSpeed) * idleBreathAmount;
-
-            targetScale = new Vector3(
-                baseScale.x * (1f + breath * 0.5f),
-                baseScale.y * (1f - breath),
-                baseScale.z
-            );
-        }
+        targetScale = new Vector3(
+            baseScale.x * stretchX,
+            baseScale.y * squashY,
+            baseScale.z
+        );
 
         // 3) Плавное применение
         transform.localScale = Vector3.Lerp(
@@ -94,23 +74,13 @@ public class MovementSquashStretch : MonoBehaviour
         );
     }
 
+    private Vector3 _lastPosition;
     private Vector2 GetVelocity()
     {
-        if (useExternalVelocity)
-            return externalVelocity;
-
-        if (body != null)
-            return body.linearVelocity;
-
-        return Vector2.zero;
-    }
-
-    /// <summary>
-    /// Если двигаешь игрока через transform / свой input — вызывай это из Move().
-    /// </summary>
-    public void SetVelocity(Vector2 velocity)
-    {
-        externalVelocity = velocity;
+        var velocity = (transform.position - _lastPosition) / Time.deltaTime;
+        _lastPosition = transform.position;
+        
+        return velocity;
     }
 
     /// <summary>

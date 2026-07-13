@@ -65,7 +65,10 @@ public class EnemyBase : MonoBehaviour
 
         Move();
         attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0) TryAttack();
+        if (attackTimer <= 0)
+        {
+            TryAttack();
+        }
     }
 
     protected virtual void Move()
@@ -192,5 +195,10 @@ public class EnemyBase : MonoBehaviour
             if (karma != null) karma.SetValue(karmaValue);
         }
         Destroy(gameObject);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 }

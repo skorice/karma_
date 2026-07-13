@@ -30,9 +30,9 @@ Transform:
   m_GameObject: {fileID: 6022969119905769290}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.6892, y: 2.9618, z: 0}
-  m_LocalScale: {x: 20, y: 30, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8499243052114706715, guid: befe11f8af318924b9f1582bf5bcea38, type: 3}
+  m_Sprite: {fileID: -3966044189379602213, guid: 5b312c86610a481429e676bdac77212a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,17 +129,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.17882955, y: 0.008515835}
+  m_Offset: {x: 0.26726303, y: 0.008515835}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.07, y: 4.48}
+    oldSize: {x: 2.84, y: 5.85}
     newSize: {x: 3.07, y: 4.48}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.6393633, y: 1.3291934}
+  m_Size: {x: 1.2534719, y: 1.3291934}
   m_EdgeRadius: 0
 --- !u!50 &533762872010070396
 Rigidbody2D:
@@ -180,17 +180,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a757ab0be4d1340a9eb62413e1a9d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Daitya
-  maxHealth: 65
-  moveSpeed: 128
-  turnSpeed: 4
+  maxHealth: 12
+  moveSpeed: 6
+  turnSpeed: 3
   damage: 10
-  attackRadius: 5.8
-  attackCooldown: 0.05
+  attackRadius: 1.11
+  attackCooldown: 0.2
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
   stunDuration: 0.05
-  separationRadius: 20
-  separationStrength: 30
+  separationRadius: 6.4
+  separationStrength: 4
   enemyMask:
     serializedVersion: 2
     m_Bits: 256
@@ -207,12 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96663b03ae264c959a7ed4a933bdf98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementSquashStretch
-  body: {fileID: 533762872010070396}
-  useExternalVelocity: 0
   idleBreathAmount: 0.03
   idleBreathSpeed: 2.2
   runPulseAmount: 0.08
   runPulseSpeed: 10
-  minSpeedToAnimate: 0.15
   directionalStretch: 0.06
   scaleLerpSpeed: 18
