@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Rakshasa : EnemyBase
 {
@@ -15,11 +16,13 @@ public class Rakshasa : EnemyBase
     private float shootTimer;
     private float baseSpeed;
     private float baseDamage;
-    private float buffTimer = 0f; // ← добавлено!
+    private float buffTimer = 0f;
 
-    protected override void Start()
+    protected override IEnumerator Start()
     {
-        base.Start();
+        // ждём базовый Start() из EnemyBase
+        yield return base.Start();
+
         baseSpeed = moveSpeed;
         baseDamage = damage;
     }
@@ -28,15 +31,14 @@ public class Rakshasa : EnemyBase
     {
         base.Update();
 
-        // Перемещение с учётом дистанции
-        float distance = 0f; // ← объявляем ЗДЕСЬ, чтобы была доступна во всём методе
+        float distance = 0f;
+
         if (player != null)
         {
             distance = Vector2.Distance(transform.position, player.position);
 
             if (distance > maxDistance)
             {
-                // Приближаемся
                 transform.position = Vector2.MoveTowards(
                     transform.position,
                     player.position,
@@ -44,14 +46,11 @@ public class Rakshasa : EnemyBase
             }
             else if (distance < minDistance)
             {
-                // Отступаем
                 Vector2 dir = (transform.position - player.position).normalized;
                 transform.position += (Vector3)(dir * moveSpeed * Time.deltaTime);
             }
-            // иначе стоим на месте
         }
 
-        // Стрельба
         shootTimer -= Time.deltaTime;
         if (shootTimer <= 0 && player != null && distance <= maxDistance)
         {
@@ -59,7 +58,6 @@ public class Rakshasa : EnemyBase
             shootTimer = shootCooldown;
         }
 
-        // Обновление баффа стаи
         buffTimer += Time.deltaTime;
         if (buffTimer >= 0.5f)
         {
@@ -75,6 +73,7 @@ public class Rakshasa : EnemyBase
 
         Vector2 direction = (player.position - transform.position).normalized;
         GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+
         Projectile projectile = proj.GetComponent<Projectile>();
         if (projectile != null)
         {
@@ -86,6 +85,7 @@ public class Rakshasa : EnemyBase
     {
         Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, checkRadius);
         int count = 0;
+
         foreach (Collider2D col in nearby)
         {
             if (col.GetComponent<Rakshasa>() != null)

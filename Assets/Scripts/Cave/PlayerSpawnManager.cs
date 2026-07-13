@@ -1,37 +1,82 @@
 using UnityEngine;
-using System.Collections;
 
 public class PlayerSpawnManager : MonoBehaviour
 {
-    [SerializeField] private Transform spawnPointPrefab; // Префаб точки спавна
+    public static PlayerSpawnManager Instance;
 
-    private void Start()
+    [Header("Player Prefab")]
+    [SerializeField] private GameObject playerPrefab;
+
+    private GameObject playerInstance;
+
+    [Header("Arena Spawn")]
+    [SerializeField] public Transform arenaSpawnPoint;
+
+    private void Awake()
     {
-        StartCoroutine(DelayedSpawn());
-    }
-
-    private IEnumerator DelayedSpawn()
-    {
-        yield return null; // ждём один кадр, пока игрок появится в сцене
-        SpawnPlayer();
-    }
-
-    private void SpawnPlayer()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if (player == null)
+        if (Instance == null)
         {
-            Debug.LogError("Player not found! Make sure the player has tag 'Player'.");
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            SpawnPlayerOnce();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // Создаём игрока один раз
+    private void SpawnPlayerOnce()
+    {
+        if (playerInstance != null)
+            return;
+
+        if (playerPrefab == null)
+        {
+            Debug.LogError("PlayerPrefab не назначен в PlayerSpawnManager!");
             return;
         }
 
-        // Создаём точку спавна из префаба
-        Transform spawnPoint = Instantiate(spawnPointPrefab);
+        playerInstance = Instantiate(playerPrefab);
+        playerInstance.tag = "Player";
+        DontDestroyOnLoad(playerInstance);
 
-        // Перемещаем игрока
-        player.transform.position = spawnPoint.position;
+        Debug.Log("Player создан один раз из префаба.");
+    }
 
-        Debug.Log($"Игрок перемещён в точку спавна: {spawnPoint.position}");
+    // Обновляем точку спавна арены
+    public void RefreshArenaSpawnPoint()
+    {
+        GameObject obj = GameObject.FindWithTag("ArenaSpawnPoint");
+
+        if (obj == null)
+        {
+            Debug.LogError("ArenaSpawnPoint не найден в сцене! Убедись, что он есть и имеет тег.");
+            return;
+        }
+
+        arenaSpawnPoint = obj.transform;
+        Debug.Log("ArenaSpawnPoint обновлён.");
+    }
+
+    // Перемещаем игрока в нужную точку
+    public void MovePlayerTo(Transform point)
+    {
+        if (point == null)
+        {
+            Debug.LogError("MovePlayerTo получил пустую точку!");
+            return;
+        }
+
+        if (playerInstance == null)
+        {
+            Debug.LogError("PlayerInstance отсутствует! Игрок не создан.");
+            return;
+        }
+
+        playerInstance.transform.position = point.position;
+        Debug.Log($"Игрок перемещён в точку: {point.position}");
     }
 }

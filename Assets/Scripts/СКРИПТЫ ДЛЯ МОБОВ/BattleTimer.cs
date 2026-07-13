@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class BattleTimer : MonoBehaviour
 {
@@ -41,7 +42,6 @@ public class BattleTimer : MonoBehaviour
     private PlayerSettings playerSettings;
     private GameObject spawnedPortal;
 
-    // Для задержки
     private bool isDelaying;
     private float delayTimer;
 
@@ -63,10 +63,9 @@ public class BattleTimer : MonoBehaviour
 
         playerSettings = FindFirstObjectByType<PlayerSettings>();
 
-        // Начинаем задержку
         isDelaying = true;
         delayTimer = startDelay;
-        UpdateTimerDisplay(); // показываем начальный отсчёт
+        UpdateTimerDisplay();
         Debug.Log($"⏳ Обратный отсчёт: {startDelay} секунд до начала боя");
     }
 
@@ -74,11 +73,10 @@ public class BattleTimer : MonoBehaviour
     {
         if (battleFinished) return;
 
-        // --- Фаза задержки ---
         if (isDelaying)
         {
             delayTimer -= Time.deltaTime;
-            UpdateTimerDisplay(); // обновляем текст обратного отсчёта
+            UpdateTimerDisplay();
 
             if (delayTimer <= 0)
             {
@@ -86,13 +84,11 @@ public class BattleTimer : MonoBehaviour
                 timerText.text = "GO!";
                 StartBattle();
                 Debug.Log("⚔️ Бой начался!");
-                // Через 0.5 секунды убираем "GO!" и показываем нормальное время
                 Invoke(nameof(ResetTimerDisplay), 0.5f);
             }
             return;
         }
 
-        // --- Основной цикл боя ---
         timer -= Time.deltaTime;
 
         if (timer <= 0)
@@ -120,10 +116,24 @@ public class BattleTimer : MonoBehaviour
 
     private void StartBattle()
     {
-        if (spawner == null) return;
-        AudioManager.Instance.PlayStartFight();
+        StartCoroutine(WaitForPlayerAndStart());
+    }
 
+    private IEnumerator WaitForPlayerAndStart()
+    {
+        while (GameObject.FindGameObjectWithTag("Player") == null)
+            yield return null;
+
+        ReallyStartBattle();
+    }
+
+    private void ReallyStartBattle()
+    {
+        if (spawner == null) return;
+
+        AudioManager.Instance.PlayStartFight();
         AudioManager.Instance.PlayMusicBattle();
+
         waveIndex = 0;
         currentWaveCount = GetWaveCount(waveIndex);
         waveTimer = waveInterval;
@@ -143,7 +153,6 @@ public class BattleTimer : MonoBehaviour
              + wave * (baseWaveAdd + level * levelWaveAdd);
     }
 
-    // Обновление UI (основной таймер)
     private void UpdateUI()
     {
         if (timerSlider != null)
@@ -157,7 +166,6 @@ public class BattleTimer : MonoBehaviour
         }
     }
 
-    // Обновление текста во время обратного отсчёта
     private void UpdateTimerDisplay()
     {
         if (timerText == null) return;
@@ -169,7 +177,6 @@ public class BattleTimer : MonoBehaviour
         }
     }
 
-    // Сброс текста после "GO!" на нормальный таймер
     private void ResetTimerDisplay()
     {
         if (!isDelaying && timerText != null)
@@ -193,7 +200,7 @@ public class BattleTimer : MonoBehaviour
     {
         if (portalPrefab == null)
         {
-            Debug.LogError("❌ Portal Prefab не назначен!");
+            Debug.LogError(" Portal Prefab не назначен!");
             return;
         }
 
@@ -202,9 +209,10 @@ public class BattleTimer : MonoBehaviour
             Debug.LogError("❌ Не назначена позиция появления портала!");
             return;
         }
+
         AudioManager.Instance.PlayPortal();
         spawnedPortal = Instantiate(portalPrefab, portalSpawnPosition.position, Quaternion.identity);
-        Debug.Log($"🌀 Портал заспавнен: {portalSpawnPosition.position}");
+        Debug.Log($" Портал заспавнен: {portalSpawnPosition.position}");
     }
 
     private void OnDrawGizmosSelected()

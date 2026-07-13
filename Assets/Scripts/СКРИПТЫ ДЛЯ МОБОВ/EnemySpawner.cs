@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
@@ -7,12 +8,10 @@ public class EnemySpawner : MonoBehaviour
     public class EnemyTypeInfo
     {
         public EnemyBase prefab;
-        public int waveUnlock; // с какой волны доступен
-
+        public int waveUnlock;
         [Range(0f, 100f)]
-        public float quotaPercent; // % от общего числа врагов в волне
-
-        public bool isResidual; // получает остаток врагов
+        public float quotaPercent;
+        public bool isResidual;
     }
 
     [Header("Enemy Types Configuration")]
@@ -27,41 +26,36 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float mapPadding = 20f;
 
     [Header("Random Spawn Settings")]
-    [Tooltip("Минимальное расстояние от игрока до точки появления врага")]
     [SerializeField] private float minimumDistanceFromPlayer = 120f;
-
-    [Tooltip("Минимальное расстояние между врагами, создаваемыми в одной волне")]
     [SerializeField] private float minimumDistanceBetweenSpawns = 5f;
-
-    [Tooltip("Количество попыток найти подходящую позицию")]
     [SerializeField] private int positionSearchAttempts = 30;
 
     private bool canSpawn;
 
-    // Позиции врагов, уже созданных во время текущего вызова спавна волны.
     private readonly List<Vector2> currentWaveSpawnPositions = new List<Vector2>();
 
-    private void Start()
+    private IEnumerator Start()
     {
-        if (player == null)
-        {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        while (GameObject.FindGameObjectWithTag("Player") == null)
+            yield return null;
 
-            if (playerObj != null)
-                player = playerObj.transform;
-            else
-                Debug.LogError("Игрок не найден");
-        }
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        Debug.Log("EnemySpawner: игрок найден, спавн готов.");
     }
 
     public void StartSpawning() => canSpawn = true;
     public void StopSpawning() => canSpawn = false;
 
-    // Вызывается из BattleTimer для спавна волны
     public void SpawnWaveWithTypes(int waveIndex, int waveSize)
     {
         if (!canSpawn)
             return;
+
+        if (player == null)
+        {
+            Debug.LogWarning("EnemySpawner: игрок ещё не появился, волна не будет заспавнена.");
+            return;
+        }
 
         if (enemyTypes == null || enemyTypes.Count == 0)
         {
@@ -69,13 +63,9 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        // Очищаем только позиции текущей волны.
         currentWaveSpawnPositions.Clear();
 
-        // Считаем, сколько врагов каждого типа нужно спавнить.
-        Dictionary<EnemyTypeInfo, int> counts =
-            new Dictionary<EnemyTypeInfo, int>();
-
+        Dictionary<EnemyTypeInfo, int> counts = new Dictionary<EnemyTypeInfo, int>();
         int totalOther = 0;
 
         foreach (var type in enemyTypes)
@@ -83,13 +73,9 @@ public class EnemySpawner : MonoBehaviour
             if (type.isResidual)
                 continue;
 
-            // Проверяем, доступен ли тип на этой волне.
             if (waveIndex + 1 >= type.waveUnlock)
             {
-                int count = Mathf.FloorToInt(
-                    waveSize * type.quotaPercent / 100f
-                );
-
+                int count = Mathf.FloorToInt(waveSize * type.quotaPercent / 100f);
                 counts[type] = count;
                 totalOther += count;
             }
@@ -99,17 +85,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        // Ищем тип, который получает оставшихся врагов.
-        EnemyTypeInfo residualType = null;
-
-        foreach (var type in enemyTypes)
-        {
-            if (type.isResidual)
-            {
-                residualType = type;
-                break;
-            }
-        }
+        EnemyTypeInfo residualType = enemyTypes.Find(t => t.isResidual);
 
         if (residualType != null)
         {
@@ -117,7 +93,6 @@ public class EnemySpawner : MonoBehaviour
             counts[residualType] = residualCount;
         }
 
-        // Спавн.
         foreach (var kvp in counts)
         {
             int count = kvp.Value;
@@ -136,7 +111,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (player == null)
         {
-            Debug.LogError("Player not assigned in EnemySpawner!");
+            Debug.LogWarning("EnemySpawner: игрок ещё не появился — враг не будет заспавнен.");
             return;
         }
 
@@ -145,20 +120,13 @@ public class EnemySpawner : MonoBehaviour
 
         if (!TryFindRandomSpawnPosition(out Vector2 spawnPosition))
         {
-            Debug.LogWarning(
-                "Не удалось найти безопасную позицию для спавна врага. " +
-                "Проверьте размеры карты и Minimum Distance From Player."
-            );
+            Debug.LogWarning("Не удалось найти безопасную позицию для спавна врага.");
             return;
         }
 
         currentWaveSpawnPositions.Add(spawnPosition);
 
-        Instantiate(
-            enemyPrefab,
-            spawnPosition,
-            Quaternion.identity
-        );
+        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 
     private bool TryFindRandomSpawnPosition(out Vector2 spawnPosition)
@@ -172,21 +140,14 @@ public class EnemySpawner : MonoBehaviour
 
         if (minX > maxX || minY > maxY)
         {
-            Debug.LogError(
-                "Некорректные размеры области спавна. " +
-                "Map Padding превышает размеры карты."
-            );
-
+            Debug.LogError("Некорректные размеры области спавна.");
             return false;
         }
 
         Vector2 playerPosition = player.position;
 
-        float safeDistance = Mathf.Max(0f, minimumDistanceFromPlayer);
-        float safeDistanceSqr = safeDistance * safeDistance;
-
-        float spawnDistance = Mathf.Max(0f, minimumDistanceBetweenSpawns);
-        float spawnDistanceSqr = spawnDistance * spawnDistance;
+        float safeDistanceSqr = minimumDistanceFromPlayer * minimumDistanceFromPlayer;
+        float spawnDistanceSqr = minimumDistanceBetweenSpawns * minimumDistanceBetweenSpawns;
 
         int attempts = Mathf.Max(1, positionSearchAttempts);
 
@@ -197,8 +158,6 @@ public class EnemySpawner : MonoBehaviour
                 Random.Range(minY, maxY)
             );
 
-            // Жёсткая безопасная зона вокруг игрока.
-            // Точка внутри неё никогда не будет использована.
             if ((candidate - playerPosition).sqrMagnitude < safeDistanceSqr)
                 continue;
 
@@ -212,20 +171,12 @@ public class EnemySpawner : MonoBehaviour
         return false;
     }
 
-    private bool IsTooCloseToAnotherSpawn(
-        Vector2 position,
-        float minimumDistanceSqr)
+    private bool IsTooCloseToAnotherSpawn(Vector2 position, float minimumDistanceSqr)
     {
-        if (minimumDistanceSqr <= 0f)
-            return false;
-
         foreach (Vector2 otherPosition in currentWaveSpawnPositions)
         {
-            if ((position - otherPosition).sqrMagnitude <
-                minimumDistanceSqr)
-            {
+            if ((position - otherPosition).sqrMagnitude < minimumDistanceSqr)
                 return true;
-            }
         }
 
         return false;

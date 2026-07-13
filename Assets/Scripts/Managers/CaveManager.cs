@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class CaveManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class CaveManager : MonoBehaviour
     [Header("Scenes")]
     [SerializeField] private string fightScene = "KoryArena";
     [SerializeField] private string[] caveScenes;
+    [SerializeField] private GameObject finalPanelPrefab;
 
     private int currentCave = -1;
     private int currentCycle = 1;
@@ -28,12 +30,15 @@ public class CaveManager : MonoBehaviour
         }
     }
 
+    // Вызывается после боя, когда игрок входит в портал (старт цикла: пещера 0)
     public void OnBattleComplete()
     {
         currentCave = 0;
-        SceneManager.LoadScene(caveScenes[currentCave]);
+        SceneManager.LoadScene(caveScenes[currentCave], LoadSceneMode.Single);
+        StartCoroutine(PlacePlayerInCave());
     }
 
+    // Переход к следующей пещере
     public void LoadNextCave()
     {
         currentCave++;
@@ -44,9 +49,11 @@ public class CaveManager : MonoBehaviour
             return;
         }
 
-        SceneManager.LoadScene(caveScenes[currentCave]);
+        SceneManager.LoadScene(caveScenes[currentCave], LoadSceneMode.Single);
+        StartCoroutine(PlacePlayerInCave());
     }
 
+    // Возврат на арену (если цикл не финальный)
     public void ReturnToFight()
     {
         currentCave = -1;
@@ -54,23 +61,71 @@ public class CaveManager : MonoBehaviour
         if (currentCycle < 3)
             currentCycle++;
 
-        SceneManager.LoadScene(fightScene);
+        SceneManager.LoadScene(fightScene, LoadSceneMode.Single);
+        StartCoroutine(ActivateArenaAndPlacePlayer());
     }
 
+    // Проверка: третий ли цикл
     public bool IsFinalCycle()
     {
         return currentCycle == 3;
     }
 
+    // Проверка: последняя ли пещера
     public bool IsLastCave()
     {
         return currentCave == caveScenes.Length - 1;
     }
 
+    // Показ финальной панели
+    public void ShowFinalPanel()
+    {
+        Instantiate(finalPanelPrefab);
+    }
+
+    // Полный сброс игры
     public void ResetGame()
     {
         currentCycle = 1;
         currentCave = -1;
         BuffScoreManager.Instance.ResetScore();
+    }
+
+    // --- Перемещение игрока после загрузки пещеры ---
+    private IEnumerator PlacePlayerInCave()
+    {
+        yield return null; // ждём 1 кадр, пока сцена прогрузится
+
+        GameObject spawnObj = GameObject.FindWithTag("CaveSpawnPoint");
+        if (spawnObj == null)
+        {
+            Debug.LogError("CaveSpawnPoint не найден в сцене! Убедись, что он есть и имеет тег.");
+            yield break;
+        }
+
+        Transform spawnPoint = spawnObj.transform;
+        PlayerSpawnManager.Instance.MovePlayerTo(spawnPoint);
+    }
+
+    // --- Перемещение игрока после загрузки арены ---
+    private IEnumerator ActivateArenaAndPlacePlayer()
+    {
+        yield return null; // ждём загрузку
+
+        Scene arena = SceneManager.GetSceneByName(fightScene);
+        SceneManager.SetActiveScene(arena);
+
+        Debug.Log("Сцена арены активирована: " + SceneManager.GetActiveScene().name);
+
+        PlayerSpawnManager.Instance.RefreshArenaSpawnPoint();
+
+        Transform spawnPoint = PlayerSpawnManager.Instance.arenaSpawnPoint;
+        if (spawnPoint == null)
+        {
+            Debug.LogError("ArenaSpawnPoint не назначен в PlayerSpawnManager!");
+            yield break;
+        }
+
+        PlayerSpawnManager.Instance.MovePlayerTo(spawnPoint);
     }
 }

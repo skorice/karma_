@@ -7,8 +7,6 @@ public class EnemyBase : MonoBehaviour
     [Header("Stats")]
     [SerializeField] protected float maxHealth = 50f;
     [SerializeField] protected float moveSpeed = 3f;
-    // Насколько быстро враг доворачивает скорость к нужному направлению.
-    // Меньше = больше инерции/запаздывания, больше = резче реакция.
     [SerializeField] private float turnSpeed = 4f;
 
     [SerializeField] protected float damage = 5f;
@@ -35,11 +33,14 @@ public class EnemyBase : MonoBehaviour
 
     private Vector2 currentVelocity;
 
-    protected virtual void Start()
+    protected virtual IEnumerator Start()
     {
         currentHealth = maxHealth;
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) player = playerObj.transform;
+
+        while (GameObject.FindGameObjectWithTag("Player") == null)
+            yield return null;
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null) originalColor = spriteRenderer.color;
@@ -51,7 +52,7 @@ public class EnemyBase : MonoBehaviour
         {
             stunTimer -= Time.deltaTime;
             if (stunTimer <= 0) isStunned = false;
-            return; // в стауне ничего не делаем
+            return;
         }
 
         if (player == null) return;
@@ -63,14 +64,11 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Move()
     {
-        // Желаемая скорость — направление к игроку на полной скорости
         Vector2 desiredDirection = ((Vector2)player.position - (Vector2)transform.position).normalized;
         Vector2 desiredVelocity = desiredDirection * moveSpeed;
 
-        // Плавно подтягиваем текущую скорость к желаемой (инерция)
         currentVelocity = Vector2.Lerp(currentVelocity, desiredVelocity, turnSpeed * Time.deltaTime);
 
-        // Двигаемся по сглаженной скорости
         transform.position += (Vector3)(currentVelocity * Time.deltaTime);
     }
 

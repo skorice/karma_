@@ -8,6 +8,8 @@ TagManager:
   - Mob
   - Background
   - Ground
+  - CaveSpawnPoint
+  - ArenaSpawnPoint
   layers:
   - Default
   - TransparentFX

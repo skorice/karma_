@@ -461,7 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   settings: {fileID: 1754953996361796525}
   healthBar: {fileID: 1504531458627152313}
-  respawnPoint: {fileID: 0}
+  respawnPoint: {fileID: 4842847115939634281, guid: fc9753d9a83caf64391aaeaf4d83db63, type: 3}
 --- !u!114 &-1425232823223174921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelManager
   playerSettings: {fileID: 1754953996361796525}
-  levelSlider: {fileID: 0}
+  levelSlider: {fileID: 146324889168107152, guid: a70cb43489ba4014aa37055ac08958f3, type: 3}
   baseXP: 10
   xpMultiplier: 3.5
 --- !u!1 &6365238508105053775

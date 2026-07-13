@@ -23,10 +23,15 @@ public class PlayerLevelManager : MonoBehaviour
             return;
         }
 
+        // Попробуем найти слайдер, если он не назначен в инспекторе
         if (levelSlider == null)
         {
-            Debug.LogError("Level Slider не назначен!");
-            return;
+            levelSlider = FindObjectOfType<Slider>();
+            if (levelSlider == null)
+            {
+                Debug.LogWarning("Level Slider не найден в сцене. UI-обновление будет пропущено.");
+                return;
+            }
         }
 
         UpdateUI();
@@ -50,12 +55,17 @@ public class PlayerLevelManager : MonoBehaviour
 
     private int GetRequiredXP()
     {
-        return Mathf.RoundToInt(baseXP *
-               Mathf.Pow(xpMultiplier, playerSettings.playerLvl - 1));
+        return Mathf.RoundToInt(
+            baseXP * Mathf.Pow(xpMultiplier, playerSettings.playerLvl - 1)
+        );
     }
 
     private void UpdateUI()
     {
+        // Главная защита от NullReference
+        if (levelSlider == null)
+            return;
+
         levelSlider.maxValue = GetRequiredXP();
         levelSlider.value = currentXP;
     }

@@ -17,6 +17,7 @@ public class GateTrigger : MonoBehaviour
     {
         bool hasAnomaly = caveState.HasAnomaly;
 
+        // Логика начисления очков — НЕ трогаем
         if (isLeftGate)
         {
             if (hasAnomaly)
@@ -32,13 +33,23 @@ public class GateTrigger : MonoBehaviour
                 BuffScoreManager.Instance.AddPoint();
         }
 
-        // Если это последняя пещера → возвращаемся в бой
+        //  ДОПОЛНЕНИЕ: логика конца цикла 
         if (CaveManager.Instance.IsLastCave())
         {
-            CaveManager.Instance.ReturnToFight();
+            // Если это последний цикл (3) → показываем финальную панель
+            if (CaveManager.Instance.IsFinalCycle())
+            {
+                CaveManager.Instance.ShowFinalPanel();
+            }
+            else
+            {
+                // Иначе возвращаемся на арену
+                CaveManager.Instance.ReturnToFight();
+            }
         }
         else
         {
+            // Если это НЕ последняя пещера → загружаем следующую
             CaveManager.Instance.LoadNextCave();
         }
     }
