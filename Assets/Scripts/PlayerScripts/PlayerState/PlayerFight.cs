@@ -35,11 +35,12 @@ public class PlayerFight : MonoBehaviour
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position,
-            _attackRadius * transform.localScale.x
+            _attackRadius
         );
 
         if (hits.Any(e => e.CompareTag("Mob")))
         {
+            AudioManager.Instance.PlayRandomAttack();
             _damageRadiusVfx.PlayAttackPulse();
         }
         
@@ -51,7 +52,6 @@ public class PlayerFight : MonoBehaviour
                 if (enemy != null)
                 {
                     enemy.TakeDamage(_settings.AttackPower);
-                    AudioManager.Instance.PlayRandomAttack();
                     Debug.Log($"⚔️ Удар по {hit.name} силой {_settings.AttackPower}");
                 }
             }
@@ -60,6 +60,6 @@ public class PlayerFight : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, _attackRadius * transform.localScale.x);
+        Gizmos.DrawWireSphere(transform.position, _attackRadius);
     }
 }

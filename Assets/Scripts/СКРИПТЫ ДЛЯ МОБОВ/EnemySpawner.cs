@@ -230,4 +230,27 @@ public class EnemySpawner : MonoBehaviour
 
         return false;
     }
+    
+    private void OnDrawGizmos()
+    {
+        // --- Границы карты (жёлтый прямоугольник) ---
+        Gizmos.color = Color.yellow;
+        Vector3 mapSize = new Vector3(halfWidth * 2f, halfHeight * 2f, 0f);
+        Gizmos.DrawWireCube(transform.position, mapSize);
+
+        // --- Область спавна с учётом padding (голубой прямоугольник) ---
+        float spawnWidth = Mathf.Max(0f, (halfWidth - mapPadding) * 2f);
+        float spawnHeight = Mathf.Max(0f, (halfHeight - mapPadding) * 2f);
+
+        Gizmos.color = Color.cyan;
+        Vector3 spawnSize = new Vector3(spawnWidth, spawnHeight, 0f);
+        Gizmos.DrawWireCube(transform.position, spawnSize);
+
+        // --- Безопасная зона вокруг игрока (красная сфера) ---
+        if (player != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(player.position, minimumDistanceFromPlayer);
+        }
+    }
 }

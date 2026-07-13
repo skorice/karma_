@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3683079675452390072}
   - component: {fileID: 6875951322910167389}
   - component: {fileID: 7697518751647480413}
+  - component: {fileID: -5477870725217853923}
   m_Layer: 8
   m_Name: Mob 3_0
   m_TagString: Mob
@@ -29,9 +30,9 @@ Transform:
   m_GameObject: {fileID: 2428615775325148880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.0849, y: -0.3819, z: 0}
-  m_LocalScale: {x: 20, y: 30, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -84,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1676229193170332757, guid: 2c74f748455cdc04b8f3ed9aea3bd9e1, type: 3}
+  m_Sprite: {fileID: -3850679877105380084, guid: 88c362963b30cb14f93f391606dbd2f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -132,7 +133,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.38, y: 4.84}
+    oldSize: {x: 2.84, y: 5.85}
     newSize: {x: 4.38, y: 4.84}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -179,18 +180,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68749644d0c20b4e835c1d10fec0aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rakshasa
-  maxHealth: 102
-  moveSpeed: 62
+  maxHealth: 56
+  moveSpeed: 3
   turnSpeed: 0.3
   damage: 30
-  attackRadius: 1.8
+  attackRadius: 1.75
   attackCooldown: 0.1
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
-  stunDuration: 0.1
+  stunDuration: 0.05
+  separationRadius: 2
+  separationStrength: 3
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 256
   projectilePrefab: {fileID: 0}
   shootCooldown: 3
   minDistance: 5
   maxDistance: 8
   checkRadius: 3
   requiredAllies: 4
+--- !u!114 &-5477870725217853923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2428615775325148880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96663b03ae264c959a7ed4a933bdf98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovementSquashStretch
+  idleBreathAmount: 0.03
+  idleBreathSpeed: 2.2
+  runPulseAmount: 0.08
+  runPulseSpeed: 10
+  directionalStretch: 0.06
+  scaleLerpSpeed: 18
