@@ -1,0 +1,377 @@
+fileFormatVersion: 2
+guid: 417fb8ad8925cee4b89961fdbc14374d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 21559313203461250
+    second: seqv_strelok_ataka_2_24_0
+  - first:
+      213: 5838163305500799603
+    second: seqv_strelok_ataka_2_24_1
+  - first:
+      213: -7833913907003231799
+    second: seqv_strelok_ataka_2_24_2
+  - first:
+      213: 9064549754537411527
+    second: seqv_strelok_ataka_2_24_3
+  - first:
+      213: -5166404817354702240
+    second: seqv_strelok_ataka_2_24_4
+  - first:
+      213: 653726686442601892
+    second: seqv_strelok_ataka_2_24_5
+  - first:
+      213: -4852471357472519512
+    second: seqv_strelok_ataka_2_24_6
+  - first:
+      213: 3960103912788790767
+    second: seqv_strelok_ataka_2_24_7
+  - first:
+      213: 6695784731869484018
+    second: seqv_strelok_ataka_2_24_8
+  - first:
+      213: 7645126966830020661
+    second: seqv_strelok_ataka_2_24_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_0
+      rect:
+        serializedVersion: 2
+        x: 491
+        y: 592
+        width: 576
+        height: 431
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28cf715c4189c4000800000000000000
+      internalID: 21559313203461250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_1
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 994
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 372781d2892550150800000000000000
+      internalID: 5838163305500799603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_2
+      rect:
+        serializedVersion: 2
+        x: 1710
+        y: 537
+        width: 509
+        height: 564
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c17414bec8584390800000000000000
+      internalID: -7833913907003231799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_3
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 619
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c38e08c9ffbbcd70800000000000000
+      internalID: 9064549754537411527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_4
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 615
+        width: 12
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 062c4bff03e3d48b0800000000000000
+      internalID: -5166404817354702240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_5
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 621
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4adba9d25f0821900800000000000000
+      internalID: 653726686442601892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_6
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 619
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8aac717820f88acb0800000000000000
+      internalID: -4852471357472519512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_7
+      rect:
+        serializedVersion: 2
+        x: 893
+        y: 621
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fed0963f68d15f630800000000000000
+      internalID: 3960103912788790767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_8
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 620
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f39093ecb43cec50800000000000000
+      internalID: 6695784731869484018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: seqv_strelok_ataka_2_24_9
+      rect:
+        serializedVersion: 2
+        x: 899
+        y: 614
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 538b9a08872f81a60800000000000000
+      internalID: 7645126966830020661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      seqv_strelok_ataka_2_24_0: 21559313203461250
+      seqv_strelok_ataka_2_24_1: 5838163305500799603
+      seqv_strelok_ataka_2_24_2: -7833913907003231799
+      seqv_strelok_ataka_2_24_3: 9064549754537411527
+      seqv_strelok_ataka_2_24_4: -5166404817354702240
+      seqv_strelok_ataka_2_24_5: 653726686442601892
+      seqv_strelok_ataka_2_24_6: -4852471357472519512
+      seqv_strelok_ataka_2_24_7: 3960103912788790767
+      seqv_strelok_ataka_2_24_8: 6695784731869484018
+      seqv_strelok_ataka_2_24_9: 7645126966830020661
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
