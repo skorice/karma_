@@ -193,6 +193,12 @@ public class BattleTimer : MonoBehaviour
 
         Debug.Log("Битва окончена. Спавн портала...");
         SpawnPortal();
+
+        foreach (var o in GameObject.FindGameObjectsWithTag("Mob"))
+        {
+            Destroy(o.gameObject);
+        }
+        
         enabled = false;
     }
 

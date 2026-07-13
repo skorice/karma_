@@ -133,11 +133,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.13786
+      value: 11.96
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -45.84166
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -145,23 +145,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.992027
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.12602584
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -14.48
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6934788205654762710, guid: bb5712dcaaa8f3746a9021cca819b4f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -238,7 +238,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 300
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -555,11 +555,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5098195019465685532, guid: c4b55b4c3f3e52247a24c43e60890396, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.13786
+      value: -12.02
       objectReference: {fileID: 0}
     - target: {fileID: 5098195019465685532, guid: c4b55b4c3f3e52247a24c43e60890396, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -45.84166
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5098195019465685532, guid: c4b55b4c3f3e52247a24c43e60890396, type: 3}
       propertyPath: m_LocalPosition.z
