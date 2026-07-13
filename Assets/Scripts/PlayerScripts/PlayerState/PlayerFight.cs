@@ -12,8 +12,6 @@ public class PlayerFight : MonoBehaviour
     private void Awake()
     {
         _settings = GetComponent<PlayerSettings>();
-        _damageRadiusVfx.radius = _attackRadius;
-        _damageRadiusVfx.BuildEffect();
     }
 
     private void Update()

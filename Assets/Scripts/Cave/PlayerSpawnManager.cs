@@ -6,11 +6,9 @@ public class PlayerSpawnManager : MonoBehaviour
 
     [Header("Player Prefab")]
     [SerializeField] private GameObject playerPrefab;
-
-    private GameObject playerInstance;
-
-    [Header("Arena Spawn")]
-    [SerializeField] public Transform arenaSpawnPoint;
+    
+    // [Header("Arena Spawn")]
+    // [SerializeField] public Transform arenaSpawnPoint;
 
     private void Awake()
     {
@@ -19,7 +17,7 @@ public class PlayerSpawnManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            SpawnPlayerOnce();
+            // SpawnPlayerOnce();
         }
         else
         {
@@ -27,56 +25,41 @@ public class PlayerSpawnManager : MonoBehaviour
         }
     }
 
-    // Создаём игрока один раз
-    private void SpawnPlayerOnce()
+    public void DestroyPlayer()
     {
-        if (playerInstance != null)
-            return;
-
+        if (player != null)
+        {
+            Destroy(player);
+        }
+    }
+    
+    private GameObject player;
+    // Создаём игрока один раз
+    public void SpawnPlayer(Vector3 position, bool enableVfx)
+    {
         if (playerPrefab == null)
         {
             Debug.LogError("PlayerPrefab не назначен в PlayerSpawnManager!");
             return;
         }
 
-        playerInstance = Instantiate(playerPrefab);
-        playerInstance.tag = "Player";
-        DontDestroyOnLoad(playerInstance);
+        DestroyPlayer();
+        
+        player = Instantiate(playerPrefab, position, Quaternion.identity);
+        player.tag = "Player";
 
-        Debug.Log("Player создан один раз из префаба.");
-    }
-
-    // Обновляем точку спавна арены
-    public void RefreshArenaSpawnPoint()
-    {
-        GameObject obj = GameObject.FindWithTag("ArenaSpawnPoint");
-
-        if (obj == null)
+        if (enableVfx)
         {
-            Debug.LogError("ArenaSpawnPoint не найден в сцене! Убедись, что он есть и имеет тег.");
-            return;
+            player.GetComponentInChildren<DamageRadiusVfx>().BuildEffect(player.GetComponent<PlayerSettings>().AttackRange);
         }
-
-        arenaSpawnPoint = obj.transform;
-        Debug.Log("ArenaSpawnPoint обновлён.");
-    }
-
-    // Перемещаем игрока в нужную точку
-    public void MovePlayerTo(Transform point)
-    {
-        if (point == null)
+        
+        var camera = GameObject.FindGameObjectWithTag("MainCamera");
+        if(camera != null)
         {
-            Debug.LogError("MovePlayerTo получил пустую точку!");
-            return;
+            if (camera.TryGetComponent<CameraFollow>(out var cameraFollow))
+            {
+                cameraFollow.target = player.transform;
+            }
         }
-
-        if (playerInstance == null)
-        {
-            Debug.LogError("PlayerInstance отсутствует! Игрок не создан.");
-            return;
-        }
-
-        playerInstance.transform.position = point.position;
-        Debug.Log($"Игрок перемещён в точку: {point.position}");
     }
 }

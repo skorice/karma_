@@ -22,7 +22,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/987aa4221989419a947e2c4ff5d6829c212c00/1f/978c27b7/SceneManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DamageRadiusVfx.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementSquashStretch.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/СКРИПТЫ ДЛЯ МОБОВ/CollectiblePulse.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -126,20 +128,6 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <condition expression="velocity == 0 &amp;&amp; speed == 0" language="C#" />
-          <url>file://$PROJECT_DIR$/Assets/Scripts/MovementSquashStretch.cs</url>
-          <line>50</line>
-          <properties documentPath="C:\repo\karma_\Assets\Scripts\MovementSquashStretch.cs" containingFunctionPresentation="Method 'LateUpdate'">
-            <startOffsets>
-              <option value="1577" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1608" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

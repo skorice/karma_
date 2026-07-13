@@ -110,7 +110,7 @@ MonoBehaviour:
   pickupDelay: 0.1
   minValue: 1
   maxValue: 5
-  attractionRadius: 1
+  attractionRadius: 3
   homingStepDuration: 0.08
   collectDistance: 0.15
 --- !u!58 &4670996059585187205

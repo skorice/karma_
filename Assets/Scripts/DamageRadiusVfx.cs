@@ -4,10 +4,6 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public sealed class DamageRadiusVfx : MonoBehaviour
 {
-    [Header("Dimensions")]
-    [SerializeField, Min(0.1f)]
-    public float radius = 5f;
-
     [Header("Rendering")]
     [SerializeField]
     private string sortingLayerName = "GroundVFX";
@@ -54,9 +50,6 @@ public sealed class DamageRadiusVfx : MonoBehaviour
     public void PlayAttackPulse()
     {
         if (!initialized)
-            BuildEffect();
-
-        if (!initialized)
             return;
 
         EmitCenteredParticle(pulseRing);
@@ -66,7 +59,7 @@ public sealed class DamageRadiusVfx : MonoBehaviour
         pulseSparks.Emit(24);
     }
 
-    public void BuildEffect()
+    public void BuildEffect(float radius)
     {
         if (initialized)
             return;
@@ -125,12 +118,12 @@ public sealed class DamageRadiusVfx : MonoBehaviour
             new Color(0.92f, 0.94f, 0.96f, 0.42f),
             baseSortingOrder + 1);
 
-        CreateAmbientMotes(moteMaterial);
+        CreateAmbientMotes(moteMaterial, radius);
 
-        pulseRing = CreatePulseRing(ringMaterial);
-        pulseFlash = CreatePulseFlash(areaMaterial);
-        pulseSmoke = CreatePulseSmoke(smokeMaterial);
-        pulseSparks = CreatePulseSparks(moteMaterial);
+        pulseRing = CreatePulseRing(ringMaterial, radius);
+        pulseFlash = CreatePulseFlash(areaMaterial, radius);
+        pulseSmoke = CreatePulseSmoke(smokeMaterial, radius);
+        pulseSparks = CreatePulseSparks(moteMaterial, radius);
 
         initialized = true;
     }
@@ -225,7 +218,7 @@ public sealed class DamageRadiusVfx : MonoBehaviour
         system.Emit(emitParams, 1);
     }
 
-    private void CreateAmbientMotes(Material material)
+    private void CreateAmbientMotes(Material material, float radius)
     {
         ParticleSystem system = CreateSystem(
             "Ambient Motes",
@@ -275,7 +268,7 @@ public sealed class DamageRadiusVfx : MonoBehaviour
         system.Play();
     }
 
-    private ParticleSystem CreatePulseRing(Material material)
+    private ParticleSystem CreatePulseRing(Material material, float radius)
     {
         ParticleSystem system = CreateSystem(
             "Attack Ring",
@@ -309,7 +302,7 @@ public sealed class DamageRadiusVfx : MonoBehaviour
         return system;
     }
 
-    private ParticleSystem CreatePulseFlash(Material material)
+    private ParticleSystem CreatePulseFlash(Material material, float radius)
     {
         ParticleSystem system = CreateSystem(
             "Attack Flash",
@@ -344,7 +337,7 @@ public sealed class DamageRadiusVfx : MonoBehaviour
         return system;
     }
 
-    private ParticleSystem CreatePulseSmoke(Material material)
+    private ParticleSystem CreatePulseSmoke(Material material, float radius)
     {
         ParticleSystem system = CreateSystem(
             "Attack Smoke",
@@ -401,7 +394,7 @@ public sealed class DamageRadiusVfx : MonoBehaviour
         return system;
     }
 
-    private ParticleSystem CreatePulseSparks(Material material)
+    private ParticleSystem CreatePulseSparks(Material material, float radius)
     {
         ParticleSystem system = CreateSystem(
             "Attack Sparks",

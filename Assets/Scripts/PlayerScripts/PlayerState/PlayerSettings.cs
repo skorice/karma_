@@ -5,6 +5,7 @@ public class PlayerSettings : MonoBehaviour
 {
     [Header("Базовые настройки игрока")]
     [SerializeField] private float BASEmoveSpeed = 5f;
+    [SerializeField] private float BASEAttackRange = 5f;
     [SerializeField] private float BASEattackPower = 1f;
     [SerializeField] private float BASEattackSpeed = 0.6f;
     [SerializeField] private float BASEplayerHealth = 100f;
@@ -15,6 +16,7 @@ public class PlayerSettings : MonoBehaviour
     [SerializeField] private float BUFFattackPower = 0.5f;
     [SerializeField] private float BUFFattackSpeed = 0.05f;
     [SerializeField] private float BUFFplayerHealth = 10f;
+    [SerializeField] private float BUFFAttackRange = 1f;
 
     [Header("Текущий уровень")]
     [SerializeField] private int currentLevel = 1;
@@ -33,6 +35,7 @@ public class PlayerSettings : MonoBehaviour
     public int playerLvl => currentLevel;
     public float MoveSpeed => (BASEmoveSpeed + (currentLevel - 1) * BUFFmoveSpeed) * _slowMultiplier;
     public float AttackPower => (BASEattackPower + (currentLevel - 1) * BUFFattackPower) * _attackPowerDebuff;
+    public float AttackRange => (BASEAttackRange + (currentLevel - 1) * BUFFAttackRange);
     public float AttackSpeed => BASEattackSpeed + (currentLevel - 1) * BUFFattackSpeed;
     public float Health => BASEplayerHealth + (currentLevel - 1) * BUFFplayerHealth;
     public float Level => currentLevel;

@@ -51,7 +51,9 @@ public class PlayerHealth : MonoBehaviour
         _currentHealth = MaxHealth;
 
         if (healthBar != null)
+        {
             OnHealthChanged += healthBar.UpdateHealth;
+        }
 
         OnHealthChanged?.Invoke(_currentHealth, MaxHealth);
         OnLivesChanged?.Invoke(_currentLives);

@@ -23,6 +23,12 @@ public class PlayerLevelManager : MonoBehaviour
             return;
         }
 
+        var levelSliderGO = GameObject.FindGameObjectWithTag("LVLTEXT");
+        if (levelSliderGO != null)
+        {
+            levelSlider = levelSliderGO.GetComponent<Slider>();
+        }
+        
         // Попробуем найти слайдер, если он не назначен в инспекторе
         if (levelSlider == null)
         {

@@ -104,7 +104,7 @@ public class CaveManager : MonoBehaviour
         }
 
         Transform spawnPoint = spawnObj.transform;
-        PlayerSpawnManager.Instance.MovePlayerTo(spawnPoint);
+        PlayerSpawnManager.Instance.SpawnPlayer(spawnPoint.position, false);
     }
 
     // --- Перемещение игрока после загрузки арены ---
@@ -117,15 +117,6 @@ public class CaveManager : MonoBehaviour
 
         Debug.Log("Сцена арены активирована: " + SceneManager.GetActiveScene().name);
 
-        PlayerSpawnManager.Instance.RefreshArenaSpawnPoint();
-
-        Transform spawnPoint = PlayerSpawnManager.Instance.arenaSpawnPoint;
-        if (spawnPoint == null)
-        {
-            Debug.LogError("ArenaSpawnPoint не назначен в PlayerSpawnManager!");
-            yield break;
-        }
-
-        PlayerSpawnManager.Instance.MovePlayerTo(spawnPoint);
+        PlayerSpawnManager.Instance.SpawnPlayer(Vector3.zero, true);
     }
 }

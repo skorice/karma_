@@ -63,6 +63,8 @@ public class BattleTimer : MonoBehaviour
 
         playerSettings = FindFirstObjectByType<PlayerSettings>();
 
+        PlayerSpawnManager.Instance.SpawnPlayer(Vector3.zero, true);
+        
         isDelaying = true;
         delayTimer = startDelay;
         UpdateTimerDisplay();
