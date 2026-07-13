@@ -158,9 +158,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 122
+  m_MaxValue: 15
   m_WholeNumbers: 0
-  m_Value: 87
+  m_Value: 11
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
