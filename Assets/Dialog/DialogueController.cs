@@ -11,6 +11,10 @@ public class DialogueController : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public GameObject dialoguePanel;
     public float typingSpeed = 0.05f;
+    
+    [Header("Auto Advance Settings")]
+    public bool autoAdvance = true; // Включить/выключить автоматическое перелистывание
+    public float delayBetweenLines = 2.0f; // Сколько секунд ждать после завершения печати текста
 
     [Header("Cycle Settings")]
     public int maxCycles = 3;
@@ -26,7 +30,9 @@ public class DialogueController : MonoBehaviour
     public System.Action<int> OnCycleChanged;
 
     private static bool instanceExists = false;
-    private bool isDialogPlaying = false; // Флаг для предотвращения двойного запуска
+    private bool isDialogPlaying = false; 
+    
+    private Coroutine currentDialogCoroutine; // Ссылка на текущую корутину для безопасной остановки
 
     void Awake()
     {
@@ -48,9 +54,6 @@ public class DialogueController : MonoBehaviour
         InitializeDialogs();
         
         SceneManager.sceneLoaded += OnSceneLoaded;
-        
-        // НЕ вызываем StartNewCycle() здесь, чтобы избежать двойного запуска
-        // StartNewCycle(); // ЗАКОММЕНТИРОВАНО
     }
 
     void OnDestroy()
@@ -65,7 +68,6 @@ public class DialogueController : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Проверяем, не запущен ли уже диалог
         if (isDialogPlaying || dialoguePanel.activeSelf)
         {
             Debug.Log($"Диалог уже активен для сцены {scene.name}, пропускаем");
@@ -76,14 +78,10 @@ public class DialogueController : MonoBehaviour
     }
 
     public void StartNewCycle() 
-    
     {
         int cycle = currentCycle;
-
         Debug.Log($"=== ДИАЛОГ ЦИКЛА {cycle} ===");
-
         OnCycleChanged?.Invoke(cycle);
-
         PlayDialogForCurrentScene();
     }
 
@@ -189,7 +187,7 @@ public class DialogueController : MonoBehaviour
             }
         };
 
-        //  СЦЕНА CAVE2 
+        // СЦЕНА CAVE2 
         allDialogs["Cave2"] = new DialogScene
         {
             sceneName = "Cave2",
@@ -339,7 +337,7 @@ public class DialogueController : MonoBehaviour
             }
         };
 
-        //  СЦЕНА FINAL 
+        // СЦЕНА FINAL 
         allDialogs["Final"] = new DialogScene
         {
             sceneName = "Final",
@@ -355,7 +353,6 @@ public class DialogueController : MonoBehaviour
 
     void PlayDialogForCurrentScene()
     {
-        // Проверяем, не идет ли уже диалог
         if (isDialogPlaying || dialoguePanel.activeSelf)
         {
             Debug.Log("Диалог уже играет, пропускаем");
@@ -392,13 +389,11 @@ public class DialogueController : MonoBehaviour
         currentLines.Clear();
         dialogFinished = false;
 
-        // Логика добавления вступительной фразы
         if (currentCycle == 1)
         {
             if (scene.introLine != null && !string.IsNullOrEmpty(scene.introLine.text))
             {
                 currentLines.Enqueue(scene.introLine);
-                Debug.Log($"Добавлена вступительная фраза (цикл 1): {scene.introLine.text}");
             }
         }
         else
@@ -408,7 +403,6 @@ public class DialogueController : MonoBehaviour
                 int randomIndex = Random.Range(0, scene.randomLines.Length);
                 DialogLine randomLine = scene.randomLines[randomIndex];
                 currentLines.Enqueue(randomLine);
-                Debug.Log($"Добавлена случайная фраза (цикл {currentCycle}): {randomLine.text}");
             }
         }
 
@@ -429,12 +423,10 @@ public class DialogueController : MonoBehaviour
             {
                 int variantIndex = Random.Range(0, availableVariants.Count);
                 linesToUse = availableVariants[variantIndex].lines;
-                Debug.Log($"Сцена {scene.sceneName}, Цикл {currentCycle}: выбран вариант {variantIndex + 1} из {availableVariants.Count}");
             }
             else
             {
                 linesToUse = scene.variants[0].lines;
-                Debug.LogWarning($"Нет вариантов для цикла {currentCycle} в сцене {scene.sceneName}, берем первый");
             }
         }
         else
@@ -447,7 +439,6 @@ public class DialogueController : MonoBehaviour
             currentLines.Enqueue(line);
         }
 
-        Debug.Log($"Всего строк в очереди для сцены {scene.sceneName}: {currentLines.Count}");
         ShowNextLine();
     }
 
@@ -455,16 +446,26 @@ public class DialogueController : MonoBehaviour
     {
         if (dialogFinished) return;
 
+        // Оставляем возможность ручного пропуска для тех, кто читает быстро
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             if (isTyping)
             {
-                StopAllCoroutines();
+                // Если текст еще печатается, прерываем корутину и выводим весь текст
+                if (currentDialogCoroutine != null) StopCoroutine(currentDialogCoroutine);
                 dialogueText.text = currentFullText;
                 isTyping = false;
+                
+                // Запускаем таймер ожидания до следующей строки
+                if (autoAdvance)
+                {
+                    currentDialogCoroutine = StartCoroutine(WaitAndShowNext());
+                }
             }
             else
             {
+                // Если текст уже напечатан (идет ожидание), сразу переходим к следующему
+                if (currentDialogCoroutine != null) StopCoroutine(currentDialogCoroutine);
                 ShowNextLine();
             }
         }
@@ -493,14 +494,18 @@ public class DialogueController : MonoBehaviour
         else
             currentFullText = line.text;
             
-        StartCoroutine(TypeText(currentFullText));
+        // Останавливаем предыдущую корутину перед запуском новой
+        if (currentDialogCoroutine != null) StopCoroutine(currentDialogCoroutine);
+        currentDialogCoroutine = StartCoroutine(TypeTextAndAdvance(currentFullText));
     }
 
-    IEnumerator TypeText(string fullText)
+    // Новая корутина, которая печатает текст, а затем ждет и переключает на следующий
+    IEnumerator TypeTextAndAdvance(string fullText)
     {
         isTyping = true;
         dialogueText.text = "";
 
+        // 1. Печатаем текст
         foreach (char c in fullText)
         {
             dialogueText.text += c;
@@ -508,7 +513,22 @@ public class DialogueController : MonoBehaviour
         }
 
         isTyping = false;
+
+        // 2. Ждем заданное время и автоматически переходим дальше
+        if (autoAdvance)
+        {
+            yield return new WaitForSeconds(delayBetweenLines);
+            ShowNextLine();
+        }
     }
+
+    // Корутина для ожидания, если игрок пропустил анимацию печати текста
+    IEnumerator WaitAndShowNext()
+    {
+        yield return new WaitForSeconds(delayBetweenLines);
+        ShowNextLine();
+    }
+
 
     // ПУБЛИЧНЫЕ МЕТОДЫ ДЛЯ ВЫЗОВА ИЗ ДРУГИХ СКРИПТОВ 
 
@@ -592,7 +612,7 @@ public class DialogueController : MonoBehaviour
     }
 }
 
-//  КЛАССЫ ДЛЯ ХРАНЕНИЯ ДАННЫХ 
+// КЛАССЫ ДЛЯ ХРАНЕНИЯ ДАННЫХ 
 
 [System.Serializable]
 public class DialogScene

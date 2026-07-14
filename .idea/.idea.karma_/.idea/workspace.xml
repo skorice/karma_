@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="483c1d9b-64fe-4a8e-9010-50e17bb28acb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Pulse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Pulse.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.karma_/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.karma_/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Dialog/DialogStart.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Dialog/DialogStart.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Dialog/DialogueController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Dialog/DialogueController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FightArene/Portal_0.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/FightArene/Portal_0.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FightArene/player_0.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/FightArene/player_0.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Final.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Final.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainMenu.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Start.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Start.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/СКРИПТЫ ДЛЯ МОБОВ/BattleTimer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/СКРИПТЫ ДЛЯ МОБОВ/BattleTimer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,6 +27,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/987aa4221989419a947e2c4ff5d6829c212c00/1f/978c27b7/SceneManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DamageRadiusVfx.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MovementSquashStretch.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Pulse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/СКРИПТЫ ДЛЯ МОБОВ/CollectiblePulse.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -97,7 +100,7 @@
       <option name="presentableId" value="Default" />
       <updated>1783813055954</updated>
       <workItem from="1783813057114" duration="4777000" />
-      <workItem from="1784012963339" duration="1373000" />
+      <workItem from="1784012963339" duration="5355000" />
     </task>
     <servers />
   </component>
@@ -129,19 +132,6 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Dialog/DialogueController.cs</url>
-          <line>80</line>
-          <properties documentPath="C:\repo\karma_\Assets\Dialog\DialogueController.cs" containingFunctionPresentation="Method 'StartNewCycle'">
-            <startOffsets>
-              <option value="2001" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2026" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

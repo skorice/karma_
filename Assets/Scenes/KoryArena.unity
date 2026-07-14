@@ -1175,7 +1175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: battleDuration
-      value: 60
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: portalSpawnPosition

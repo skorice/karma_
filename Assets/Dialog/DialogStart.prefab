@@ -286,5 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueController
   dialogueText: {fileID: 1733294341386560412}
   dialoguePanel: {fileID: 4530071817752742514}
-  typingSpeed: 0.05
+  typingSpeed: 0.02
+  autoPlayDelay: 1
+  autoPlay: 1
   maxCycles: 3
