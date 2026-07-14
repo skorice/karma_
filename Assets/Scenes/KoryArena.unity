@@ -1155,7 +1155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: baseCount
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: baseWaveAdd
@@ -1167,7 +1167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: levelStartAdd
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: arenaSceneName
@@ -1175,7 +1175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: battleDuration
-      value: 60
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: portalSpawnPosition

@@ -2,55 +2,31 @@ using UnityEngine;
 
 public class GateTrigger : MonoBehaviour
 {
-    [SerializeField] private CaveState caveState;
-    [SerializeField] private bool isLeftGate;
+    [SerializeField] private bool isExitGate = true;
+
+    private bool isTriggered;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player"))
             return;
 
-        CheckChoice();
+        if (!isExitGate)
+            return;
+
+        if (isTriggered)
+            return;
+
+        isTriggered = true;
+
+        Debug.Log("🚪 Игрок покинул пещеру");
+
+        CaveManager.Instance.LoadNextCave();
     }
 
-    private void CheckChoice()
+    private void OnTriggerExit2D(Collider2D other)
     {
-        bool hasAnomaly = caveState.HasAnomaly;
-
-        // Логика начисления очков — НЕ трогаем
-        if (isLeftGate)
-        {
-            if (hasAnomaly)
-                BuffScoreManager.Instance.AddPoint();
-            else
-                BuffScoreManager.Instance.RemovePoint();
-        }
-        else
-        {
-            if (hasAnomaly)
-                BuffScoreManager.Instance.RemovePoint();
-            else
-                BuffScoreManager.Instance.AddPoint();
-        }
-
-        //  ДОПОЛНЕНИЕ: логика конца цикла 
-        if (CaveManager.Instance.IsLastCave())
-        {
-            // Если это последний цикл (3) → показываем финальную панель
-            if (CaveManager.Instance.IsFinalCycle())
-            {
-                CaveManager.Instance.ShowFinalPanel();
-            }
-            else
-            {
-                // Иначе возвращаемся на арену
-                CaveManager.Instance.ReturnToFight();
-            }
-        }
-        else
-        {
-            // Если это НЕ последняя пещера → загружаем следующую
-            CaveManager.Instance.LoadNextCave();
-        }
+        if (other.CompareTag("Player"))
+            isTriggered = false;
     }
 }

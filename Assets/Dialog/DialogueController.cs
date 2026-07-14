@@ -26,6 +26,7 @@ public class DialogueController : MonoBehaviour
     public System.Action<int> OnCycleChanged;
 
     private static bool instanceExists = false;
+    private bool isDialogPlaying = false; // Флаг для предотвращения двойного запуска
 
     void Awake()
     {
@@ -48,7 +49,8 @@ public class DialogueController : MonoBehaviour
         
         SceneManager.sceneLoaded += OnSceneLoaded;
         
-        StartNewCycle();
+        // НЕ вызываем StartNewCycle() здесь, чтобы избежать двойного запуска
+        // StartNewCycle(); // ЗАКОММЕНТИРОВАНО
     }
 
     void OnDestroy()
@@ -63,25 +65,26 @@ public class DialogueController : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Проверяем, не запущен ли уже диалог
+        if (isDialogPlaying || dialoguePanel.activeSelf)
+        {
+            Debug.Log($"Диалог уже активен для сцены {scene.name}, пропускаем");
+            return;
+        }
+        
         PlayDialogForCurrentScene();
     }
 
-    public void StartNewCycle()
+    public void StartNewCycle() 
+    
     {
-        if (currentCycle < maxCycles)
-        {
-            currentCycle++;
-            Debug.Log($"=== НАЧАЛО ЦИКЛА {currentCycle} ===");
-            
-            OnCycleChanged?.Invoke(currentCycle);
-            
-            PlayDialogForCurrentScene();
-        }
-        else
-        {
-            Debug.Log("Все 3 цикла завершены!");
-            SceneManager.LoadScene("Final");
-        }
+        int cycle = currentCycle;
+
+        Debug.Log($"=== ДИАЛОГ ЦИКЛА {cycle} ===");
+
+        OnCycleChanged?.Invoke(cycle);
+
+        PlayDialogForCurrentScene();
     }
 
     void InitializeDialogs()
@@ -96,12 +99,11 @@ public class DialogueController : MonoBehaviour
             {
                 new DialogLine("Шива", "Твоя очередь."),
                 new DialogLine("Брахма", "По правилам сначала выбирается фигура."),
-                new DialogLine("Вишну", "Надеюсь, в этот раз она проживёт дольше пяти минут."),
-                new DialogLine("Брахма", "Новый цикл, но правила прежние. Выживешь здесь - сможешь пройти дальше.")
+                new DialogLine("Вишну", "Надеюсь, в этот раз она проживёт дольше пяти минут.")
             }
         };
 
-        //  СЦЕНА KORYARENA 
+        // СЦЕНА KORYARENA 
         allDialogs["KoryArena"] = new DialogScene
         {
             sceneName = "KoryArena",
@@ -124,10 +126,22 @@ public class DialogueController : MonoBehaviour
             }
         };
 
-        //  СЦЕНА CAVE1 
+        // СЦЕНА CAVE1 
         allDialogs["Cave1"] = new DialogScene
         {
             sceneName = "Cave1",
+            introLine = new DialogLine("", "Направо - истина, налево - ложь. Сделай свой выбор."),
+            randomLines = new DialogLine[]
+            {
+                new DialogLine("", "Выбор всегда сложен, когда оба пути кажутся верными."),
+                new DialogLine("", "Тени на стенах танцуют, но ни одна не укажет путь."),
+                new DialogLine("", "Тишина в пещере звенит, как предупреждение."),
+                new DialogLine("", "Каждый шаг здесь - проверка на прочность."),
+                new DialogLine("", "Свет едва пробивается сквозь тьму."),
+                new DialogLine("", "Твой инстинкт - единственный компас здесь."),
+                new DialogLine("", "Старые камни хранят тайны, но молчат."),
+                new DialogLine("", "Ветер доносит эхо чужих ошибок.")
+            },
             variants = new DialogVariant[]
             {
                 new DialogVariant(new DialogLine[]
@@ -135,25 +149,43 @@ public class DialogueController : MonoBehaviour
                     new DialogLine("Шива", "Вот это место мне никогда не нравилось."),
                     new DialogLine("Брахма", "Потому что здесь нельзя ничего разрушить."),
                     new DialogLine("Шива", "Потому что здесь приходится смотреть.")
-                }),
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
                     new DialogLine("Вишну", "Кажется..."),
                     new DialogLine("Шива", "Не подсказывай.")
-                }),
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
                     new DialogLine("Брахма", "Ты заметил?"),
                     new DialogLine("Шива", "Что именно?"),
                     new DialogLine("Брахма", "Он посмотрел наверх."),
                     new DialogLine("Вишну", "Все иногда смотрят наверх.")
-                }),
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Вишну", "Кажется, он начинает понимать правила."),
-                    new DialogLine("Шива", "Какие именно?"),
-                    new DialogLine("Вишну", "Не этой игры.")
-                })
+                    new DialogLine("Шива", "Он снова здесь. Как же это предсказуемо."),
+                    new DialogLine("Брахма", "Тише. Может, в этот раз он выберет верный путь."),
+                    new DialogLine("Вишну", "Мы уже видели этот танец. Снова и снова.")
+                }, 2),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Вишну", "Он колеблется."),
+                    new DialogLine("Шива", "Все колеблются перед выбором."),
+                    new DialogLine("Брахма", "Но выбор уже сделан. Вопрос лишь в том, осознает ли он это.")
+                }, 2),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Шива", "Последний танец."),
+                    new DialogLine("Брахма", "Или первый шаг к чему-то новому?"),
+                    new DialogLine("Вишну", "Он уже почти здесь. Ещё одно испытание.")
+                }, 3),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Брахма", "Ты чувствуешь?"),
+                    new DialogLine("Шива", "Что именно?"),
+                    new DialogLine("Брахма", "Воздух изменился. Он близок к истине.")
+                }, 3)
             }
         };
 
@@ -161,81 +193,175 @@ public class DialogueController : MonoBehaviour
         allDialogs["Cave2"] = new DialogScene
         {
             sceneName = "Cave2",
+            introLine = new DialogLine("", "Ты уже почти у цели. Направо - истина, налево - ложь."),
+            randomLines = new DialogLine[]
+            {
+                new DialogLine("", "Стены здесь ближе, а дышать тяжелее."),
+                new DialogLine("", "Кажется, кто-то прошёл здесь до тебя."),
+                new DialogLine("", "Выбор становится сложнее с каждым шагом."),
+                new DialogLine("", "Тени стали длиннее, а страх - ближе."),
+                new DialogLine("", "Здесь каждый камень - свидетель."),
+                new DialogLine("", "Ты чувствуешь, как время замедляется."),
+                new DialogLine("", "Путь сужается, но выбор остаётся."),
+                new DialogLine("", "Твои шаги - единственный звук в этой тишине.")
+            },
             variants = new DialogVariant[]
             {
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Шива", "Вот это место мне никогда не нравилось."),
-                    new DialogLine("Брахма", "Потому что здесь нельзя ничего разрушить."),
-                    new DialogLine("Шива", "Потому что здесь приходится смотреть.")
-                }),
+                    new DialogLine("Шива", "Эти стены помнят каждого, кто здесь проходил."),
+                    new DialogLine("Брахма", "И каждый выбирал свой путь."),
+                    new DialogLine("Вишну", "Интересно, что выберет он?")
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Вишну", "Кажется..."),
-                    new DialogLine("Шива", "Не подсказывай.")
-                }),
+                    new DialogLine("Брахма", "Второй коридор. Как быстро летит время."),
+                    new DialogLine("Шива", "Для нас время течёт иначе."),
+                    new DialogLine("Вишну", "А для него каждая секунда может быть последней.")
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Брахма", "Ты заметил?"),
-                    new DialogLine("Шива", "Что именно?"),
-                    new DialogLine("Брахма", "Он посмотрел наверх."),
-                    new DialogLine("Вишну", "Все иногда смотрят наверх.")
-                }),
+                    new DialogLine("Вишну", "Он уже не тот, что был в начале."),
+                    new DialogLine("Шива", "Смерть меняет всех."),
+                    new DialogLine("Брахма", "Но он ещё не умер. Он только учится.")
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Вишну", "Кажется, он начинает понимать правила."),
-                    new DialogLine("Шива", "Какие именно?"),
-                    new DialogLine("Вишну", "Не этой игры.")
-                })
+                    new DialogLine("Вишну", "Он запоминает."),
+                    new DialogLine("Шива", "Это хорошо или плохо?"),
+                    new DialogLine("Брахма", "Это просто значит, что он учится. А учиться - значит меняться.")
+                }, 2),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Шива", "Снова этот коридор."),
+                    new DialogLine("Брахма", "Но он уже не тот, что был раньше."),
+                    new DialogLine("Вишну", "Или это мы изменились?")
+                }, 2),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Брахма", "Он начинает понимать закономерности."),
+                    new DialogLine("Шива", "Или ему просто везёт?"),
+                    new DialogLine("Вишну", "Везение - это тоже навык.")
+                }, 2),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Брахма", "Он почти научился слушать."),
+                    new DialogLine("Шива", "Слушать - не значит слышать."),
+                    new DialogLine("Вишну", "Но он слышит. Я вижу это по его глазам.")
+                }, 3),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Шива", "Ещё один шаг."),
+                    new DialogLine("Брахма", "Или пропасть?"),
+                    new DialogLine("Вишну", "Иногда это одно и то же.")
+                }, 3),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Вишну", "Он приближается к разгадке."),
+                    new DialogLine("Шива", "К какой именно?"),
+                    new DialogLine("Брахма", "К той, что ждёт его в конце пути.")
+                }, 3)
             }
         };
 
-        //  СЦЕНА CAVE3 
+        // СЦЕНА CAVE3 
         allDialogs["Cave3"] = new DialogScene
         {
             sceneName = "Cave3",
+            introLine = new DialogLine("", "Последний выбор. Направо - истина, налево - ложь."),
+            randomLines = new DialogLine[]
+            {
+                new DialogLine("", "Ты почти у цели. Чувствуешь?"),
+                new DialogLine("", "Свет в конце тоннеля - это выход или ловушка?"),
+                new DialogLine("", "Последние шаги - самые трудные."),
+                new DialogLine("", "Здесь воздух пахнет свободой."),
+                new DialogLine("", "Ты прошёл долгий путь, чтобы оказаться здесь."),
+                new DialogLine("", "Что ты выберешь, когда выбора почти не осталось?"),
+                new DialogLine("", "Финал близок. Или это только начало?"),
+                new DialogLine("", "Твоя судьба - в твоих руках.")
+            },
             variants = new DialogVariant[]
             {
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Шива", "Вот это место мне никогда не нравилось."),
-                    new DialogLine("Брахма", "Потому что здесь нельзя ничего разрушить."),
-                    new DialogLine("Шива", "Потому что здесь приходится смотреть.")
-                }),
+                    new DialogLine("Брахма", "Последняя пещера."),
+                    new DialogLine("Шива", "Или предпоследняя?"),
+                    new DialogLine("Вишну", "Для него - последняя. Дальше будет только финал.")
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Вишну", "Кажется..."),
-                    new DialogLine("Шива", "Не подсказывай.")
-                }),
+                    new DialogLine("Шива", "Третий раз. Третий коридор."),
+                    new DialogLine("Брахма", "Третий шанс."),
+                    new DialogLine("Вишну", "Или третья ловушка.")
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Брахма", "Ты заметил?"),
-                    new DialogLine("Шива", "Что именно?"),
-                    new DialogLine("Брахма", "Он посмотрел наверх."),
-                    new DialogLine("Вишну", "Все иногда смотрят наверх.")
-                }),
+                    new DialogLine("Вишну", "Он почти у цели."),
+                    new DialogLine("Шива", "Но цель - это всегда начало."),
+                    new DialogLine("Брахма", "Посмотрим, готов ли он к тому, что ждёт впереди.")
+                }, 1),
                 new DialogVariant(new DialogLine[]
                 {
-                    new DialogLine("Вишну", "Кажется, он начинает понимать правила."),
+                    new DialogLine("Вишну", "Он начинает понимать правила."),
                     new DialogLine("Шива", "Какие именно?"),
                     new DialogLine("Вишну", "Не этой игры.")
-                })
+                }, 2),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Шива", "Сколько раз можно проходить одно и то же?"),
+                    new DialogLine("Брахма", "Столько, сколько потребуется."),
+                    new DialogLine("Вишну", "Главное - сделать правильный вывод.")
+                }, 2),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Брахма", "Он чувствует приближение конца."),
+                    new DialogLine("Шива", "Или начала?"),
+                    new DialogLine("Вишну", "Всё зависит от того, как на это посмотреть.")
+                }, 2),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Брахма", "Я вижу свет в его глазах."),
+                    new DialogLine("Шива", "Это свет истины или просто отражение?"),
+                    new DialogLine("Вишну", "Разница не так уж велика, когда ты стоишь на пороге.")
+                }, 3),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Шива", "Он готов."),
+                    new DialogLine("Брахма", "Ты уверен?"),
+                    new DialogLine("Шива", "Нет. Но это и есть самое интересное.")
+                }, 3),
+                new DialogVariant(new DialogLine[]
+                {
+                    new DialogLine("Вишну", "Время вышло."),
+                    new DialogLine("Брахма", "Или только начинается?"),
+                    new DialogLine("Шива", "Для него - начинается. Для нас - заканчивается.")
+                }, 3)
             }
         };
 
-        // СЦЕНА FINAL 
+        //  СЦЕНА FINAL 
         allDialogs["Final"] = new DialogScene
         {
             sceneName = "Final",
             lines = new DialogLine[]
             {
-                new DialogLine("", "Допустим. Ты уверен, что все-таки вышел из игры?")
+                new DialogLine("", "Допустим. Ты уверен, что всё-таки вышел из игры?"),
+                new DialogLine("", "Тогда ответь на один вопрос..."),
+                new DialogLine("", "Что было в начале?"),
+                new DialogLine("", "И что будет в конце?")
             }
         };
     }
 
     void PlayDialogForCurrentScene()
     {
+        // Проверяем, не идет ли уже диалог
+        if (isDialogPlaying || dialoguePanel.activeSelf)
+        {
+            Debug.Log("Диалог уже играет, пропускаем");
+            return;
+        }
+
         string sceneName = SceneManager.GetActiveScene().name;
         
         if (sceneName == "Final")
@@ -259,19 +385,57 @@ public class DialogueController : MonoBehaviour
 
     IEnumerator PlayDialogScene(DialogScene scene)
     {
+        isDialogPlaying = true;
         yield return new WaitForSeconds(0.3f);
 
         dialoguePanel.SetActive(true);
         currentLines.Clear();
         dialogFinished = false;
 
+        // Логика добавления вступительной фразы
+        if (currentCycle == 1)
+        {
+            if (scene.introLine != null && !string.IsNullOrEmpty(scene.introLine.text))
+            {
+                currentLines.Enqueue(scene.introLine);
+                Debug.Log($"Добавлена вступительная фраза (цикл 1): {scene.introLine.text}");
+            }
+        }
+        else
+        {
+            if (scene.randomLines != null && scene.randomLines.Length > 0)
+            {
+                int randomIndex = Random.Range(0, scene.randomLines.Length);
+                DialogLine randomLine = scene.randomLines[randomIndex];
+                currentLines.Enqueue(randomLine);
+                Debug.Log($"Добавлена случайная фраза (цикл {currentCycle}): {randomLine.text}");
+            }
+        }
+
         DialogLine[] linesToUse;
 
         if (scene.variants != null && scene.variants.Length > 0)
         {
-            int variantIndex = Random.Range(0, scene.variants.Length);
-            linesToUse = scene.variants[variantIndex].lines;
-            Debug.Log($"Сцена {scene.sceneName}, Цикл {currentCycle}: выбран вариант {variantIndex + 1}");
+            List<DialogVariant> availableVariants = new List<DialogVariant>();
+            foreach (var variant in scene.variants)
+            {
+                if (variant.cycle == 0 || variant.cycle == currentCycle)
+                {
+                    availableVariants.Add(variant);
+                }
+            }
+
+            if (availableVariants.Count > 0)
+            {
+                int variantIndex = Random.Range(0, availableVariants.Count);
+                linesToUse = availableVariants[variantIndex].lines;
+                Debug.Log($"Сцена {scene.sceneName}, Цикл {currentCycle}: выбран вариант {variantIndex + 1} из {availableVariants.Count}");
+            }
+            else
+            {
+                linesToUse = scene.variants[0].lines;
+                Debug.LogWarning($"Нет вариантов для цикла {currentCycle} в сцене {scene.sceneName}, берем первый");
+            }
         }
         else
         {
@@ -283,6 +447,7 @@ public class DialogueController : MonoBehaviour
             currentLines.Enqueue(line);
         }
 
+        Debug.Log($"Всего строк в очереди для сцены {scene.sceneName}: {currentLines.Count}");
         ShowNextLine();
     }
 
@@ -311,6 +476,7 @@ public class DialogueController : MonoBehaviour
         {
             dialoguePanel.SetActive(false);
             dialogFinished = true;
+            isDialogPlaying = false;
             
             string currentScene = SceneManager.GetActiveScene().name;
             if (currentScene != "Final")
@@ -344,7 +510,7 @@ public class DialogueController : MonoBehaviour
         isTyping = false;
     }
 
-    //  ПУБЛИЧНЫЕ МЕТОДЫ ДЛЯ ВЫЗОВА ИЗ ДРУГИХ СКРИПТОВ 
+    // ПУБЛИЧНЫЕ МЕТОДЫ ДЛЯ ВЫЗОВА ИЗ ДРУГИХ СКРИПТОВ 
 
     public void PlayerDied()
     {
@@ -389,6 +555,12 @@ public class DialogueController : MonoBehaviour
 
     public void StartDialogForScene(string sceneName)
     {
+        if (isDialogPlaying || dialoguePanel.activeSelf)
+        {
+            Debug.Log("Диалог уже играет, пропускаем StartDialogForScene");
+            return;
+        }
+
         if (allDialogs.ContainsKey(sceneName))
         {
             StartCoroutine(PlayDialogScene(allDialogs[sceneName]));
@@ -404,10 +576,16 @@ public class DialogueController : MonoBehaviour
         return currentCycle;
     }
 
+    public bool IsDialogFinished()
+    {
+        return dialogFinished;
+    }
+
     public void ResetGame()
     {
         currentCycle = 0;
         dialogFinished = false;
+        isDialogPlaying = false;
         instanceExists = false;
         Destroy(gameObject);
         SceneManager.LoadScene("Start");
@@ -422,6 +600,8 @@ public class DialogScene
     public string sceneName;
     public DialogLine[] lines;
     public DialogVariant[] variants;
+    public DialogLine introLine;
+    public DialogLine[] randomLines;
 
     public DialogScene() { }
     
@@ -436,12 +616,14 @@ public class DialogScene
 public class DialogVariant
 {
     public DialogLine[] lines;
+    public int cycle;
 
     public DialogVariant() { }
     
-    public DialogVariant(DialogLine[] lines)
+    public DialogVariant(DialogLine[] lines, int cycle = 0)
     {
         this.lines = lines;
+        this.cycle = cycle;
     }
 }
 

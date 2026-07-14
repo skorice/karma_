@@ -1,32 +1,33 @@
 using UnityEngine;
+using System.Collections;
 
 public class Kimnara : EnemyBase
 {
     [Header("Range")]
     [SerializeField] private float minDistance = 4f;
-
     [SerializeField] private float maxDistance = 6f;
 
     [Header("Attack")]
     [SerializeField] private GameObject projectilePrefab;
-
     [SerializeField] private float shootCooldown = 3f;
 
-    private float baseHealth = 30f;
-    private float baseSpeed;
-    private float baseDamage=10f;
-
     private float shootTimer;
+    private Vector2 targetDirection;
+
+    protected override IEnumerator Start()
+    {
+        yield return base.Start();
+        shootTimer = 0f;
+    }
 
     protected override void Update()
     {
-        if (player == null)
-        return;
+        base.Update();
         
-        Move();
+        if (player == null || isStunned)
+            return;
 
         shootTimer += Time.deltaTime;
-
         if (shootTimer >= shootCooldown)
         {
             Shoot();
@@ -36,34 +37,64 @@ public class Kimnara : EnemyBase
 
     protected override void Move()
     {
-        float distance =
-            Vector2.Distance(transform.position, player.position);
+        float distance = Vector2.Distance(transform.position, player.position);
 
         if (distance > maxDistance)
         {
-            transform.position = Vector2.MoveTowards(
-                transform.position,
-                player.position,
-                moveSpeed * Time.deltaTime);
+            targetDirection = (player.position - transform.position).normalized;
         }
         else if (distance < minDistance)
         {
-            Vector2 dir =
-                (transform.position - player.position).normalized;
-
-            transform.position +=
-                (Vector3)(dir * moveSpeed * Time.deltaTime);
+            targetDirection = (transform.position - player.position).normalized;
         }
+        else
+        {
+            targetDirection = Vector2.zero;
+        }
+
+        // Используем базовую логику движения с separation
+        Vector2 myPos = transform.position;
+        Vector2 desiredVelocity = targetDirection * moveSpeed;
+
+        // Теперь GetSeparation и separationStrength доступны! ✅
+        desiredVelocity += GetSeparation(myPos) * separationStrength;
+
+        if (desiredVelocity.sqrMagnitude > moveSpeed * moveSpeed)
+            desiredVelocity = desiredVelocity.normalized * moveSpeed;
+
+        // Плавное изменение скорости
+        currentVelocity = Vector2.Lerp(
+            currentVelocity,
+            desiredVelocity,
+            turnSpeed * Time.deltaTime
+        );
+
+        transform.position += (Vector3)(currentVelocity * Time.deltaTime);
     }
 
     private void Shoot()
     {
         if (projectilePrefab == null)
+        {
+            Debug.LogWarning("ProjectilePrefab не назначен в Kimnara!");
             return;
+        }
 
-        Instantiate(
-            projectilePrefab,
-            transform.position,
-            Quaternion.identity);
+        // Создаем снаряд
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        
+        // Получаем компонент Projectile
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        if (projectileScript != null && player != null)
+        {
+            // Направляем снаряд к игроку
+            Vector2 direction = (player.position - transform.position).normalized;
+            projectileScript.SetDirection(direction);
+            Debug.Log($"{name} выпустил снаряд в сторону игрока!");
+        }
+        else
+        {
+            Debug.LogWarning("Projectile component not found on prefab!");
+        }
     }
 }

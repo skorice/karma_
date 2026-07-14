@@ -32,7 +32,8 @@ public class PlayerLevelManager : MonoBehaviour
         // Попробуем найти слайдер, если он не назначен в инспекторе
         if (levelSlider == null)
         {
-            levelSlider = FindObjectOfType<Slider>();
+            // Используем FindFirstObjectByType
+            levelSlider = FindFirstObjectByType<Slider>();
             if (levelSlider == null)
             {
                 Debug.LogWarning("Level Slider не найден в сцене. UI-обновление будет пропущено.");
@@ -50,7 +51,12 @@ public class PlayerLevelManager : MonoBehaviour
         while (currentXP >= GetRequiredXP())
         {
             currentXP -= GetRequiredXP();
-            AudioManager.Instance.PlayLevelUp();
+            
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayLevelUp();
+            }
+            
             playerSettings.NewLevel();
 
             Debug.Log($"Уровень повышен! Теперь: {playerSettings.playerLvl}");

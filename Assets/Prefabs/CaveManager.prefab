@@ -49,3 +49,4 @@ MonoBehaviour:
   - Cave1
   - Cave2
   - Cave3
+  finalPanelPrefab: {fileID: 2597047904961488373, guid: e1a497d324159d446b96009cbeaea548, type: 3}

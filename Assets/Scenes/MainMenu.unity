@@ -127,10 +127,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1000175673626487744, guid: d9a859e6e1bb71e4193860df8f46e1c2, type: 3}
+      propertyPath: typingSpeed
+      value: 0.09
+      objectReference: {fileID: 0}
     - target: {fileID: 1733294341386560412, guid: d9a859e6e1bb71e4193860df8f46e1c2, type: 3}
       propertyPath: m_text
       value: "\u0428\u0438\u0432\u0430: \u041F\u043E\u0441\u043C\u043E\u0442\u0440\u0438\u043C,
         \u0441\u043A\u043E\u043B\u044C\u043A\u043E \u0442\u044B \u043F\u0440\u043E\u0434\u0435\u0440\u0436\u0438\u0448\u044C\u0441\u044F."
+      objectReference: {fileID: 0}
+    - target: {fileID: 1733294341386560412, guid: d9a859e6e1bb71e4193860df8f46e1c2, type: 3}
+      propertyPath: m_fontSize
+      value: 42.25
       objectReference: {fileID: 0}
     - target: {fileID: 1733294341386560412, guid: d9a859e6e1bb71e4193860df8f46e1c2, type: 3}
       propertyPath: m_VerticalAlignment

@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("KoryArena");
+        SceneManager.LoadScene("Start");
     }
 
     public void OpenSettings()

@@ -1,122 +1,66 @@
-using Unity.Mathematics;
 using UnityEngine;
 
-/// <summary>
-/// Простой squash/stretch для ощущения анимации ходьбы (Brotato-like).
-/// Вешать на объект со спрайтом (или на child-спрайт).
-/// </summary>
 public class MovementSquashStretch : MonoBehaviour
 {
-    [Header("Idle breath")]
-    [SerializeField] private float idleBreathAmount = 0.03f; // 3%
-    [SerializeField] private float idleBreathSpeed = 2.2f;
-
-    [Header("Run pulse")]
-    [SerializeField] private float runPulseAmount = 0.08f;   // сила сжатия/разжатия
-    [SerializeField] private float runPulseSpeed = 10f;      // частота "шагов"
-    // [SerializeField] private float minSpeedToAnimate = 0.15f;
-
-    [Header("Move stretch")]
-    [Tooltip("Лёгкое вытягивание по направлению движения.")]
-    [SerializeField] private float directionalStretch = 0.06f;
-
-    [Header("Smoothing")]
-    [SerializeField] private float scaleLerpSpeed = 18f;
-
-    private Vector3 baseScale;
-    private float pulseTimer;
-
-    private void Awake()
+    [Header("Squash and Stretch Settings")]
+    [SerializeField] private float squashAmount = 0.8f;
+    [SerializeField] private float stretchAmount = 1.2f;
+    [SerializeField] private float speedMultiplier = 2f;
+    
+    [Header("Idle Breathing")]
+    [SerializeField] private float idleBreathAmount = 0.1f;
+    [SerializeField] private float idleBreathSpeed = 1f;
+    
+    private Vector3 originalScale;
+    private Rigidbody2D rb;
+    private float velocityMagnitude;
+    private float breathTimer;
+    
+    private void Start()
     {
-        baseScale = transform.localScale;
+        originalScale = transform.localScale;
+        rb = GetComponent<Rigidbody2D>();
     }
-
-    private void LateUpdate()
+    
+    private void Update()
     {
-        Vector2 velocity = GetVelocity();
-        float speed = velocity.magnitude;
-
-        if (Mathf.Approximately(speed, 0f))
+        if (rb != null)
         {
-            return;
+            velocityMagnitude = rb.linearVelocity.magnitude;
+            ApplySquashAndStretch();
         }
-        
-        // 1) Базовый пульс
-        Vector3 targetScale = baseScale;
-        
-        // "шаги": вверх-вниз по синусу
-        pulseTimer += Time.deltaTime * runPulseSpeed;
-
-        // sin: -1..1 → squash Y / stretch X
-        float wave = Mathf.Sin(pulseTimer);
-
-        float squashY = 1f - wave * runPulseAmount;
-        float stretchX = 1f + wave * runPulseAmount;
-
-        // 2) Лёгкое вытягивание по направлению движения
-        Vector2 dir = velocity / speed; // normalized
-        float face = Mathf.Abs(dir.x);  // больше по X — сильнее горизонтальный stretch
-
-        stretchX += face * directionalStretch;
-        squashY  -= face * directionalStretch * 0.5f;
-
-        targetScale = new Vector3(
-            baseScale.x * stretchX,
-            baseScale.y * squashY,
-            baseScale.z
-        );
-
-        // 3) Плавное применение
-        transform.localScale = Vector3.Lerp(
-            transform.localScale,
-            targetScale,
-            1f - Mathf.Exp(-scaleLerpSpeed * Time.deltaTime)
-        );
     }
-
-    private Vector3 _lastPosition;
-    private Vector2 GetVelocity()
+    
+    private void ApplySquashAndStretch()
     {
-        var velocity = (transform.position - _lastPosition) / Time.deltaTime;
-        _lastPosition = transform.position;
-        
-        return velocity;
-    }
-
-    /// <summary>
-    /// Если во время игры меняешь базовый scale персонажа (баффы и т.п.).
-    /// </summary>
-    public void SetBaseScale(Vector3 newBaseScale)
-    {
-        baseScale = newBaseScale;
-    }
-
-    /// <summary>
-    /// Одноразовый "punch" при ударе/дэше/попадании.
-    /// </summary>
-    public void Punch(float amount = 0.15f, float duration = 0.08f)
-    {
-        StopAllCoroutines();
-        StartCoroutine(PunchRoutine(amount, duration));
-    }
-
-    private System.Collections.IEnumerator PunchRoutine(float amount, float duration)
-    {
-        Vector3 punched = new Vector3(
-            baseScale.x * (1f + amount),
-            baseScale.y * (1f - amount),
-            baseScale.z
-        );
-
-        float t = 0f;
-        Vector3 start = transform.localScale;
-
-        while (t < duration)
+        if (velocityMagnitude > 0.1f)
         {
-            t += Time.deltaTime;
-            float a = t / duration;
-            transform.localScale = Vector3.Lerp(start, punched, a);
-            yield return null;
+            // Движение - применяем сжатие/растяжение
+            float stretch = 1f + (velocityMagnitude * speedMultiplier * 0.01f);
+            float squash = 1f / Mathf.Sqrt(stretch);
+            
+            Vector3 newScale = originalScale;
+            newScale.x *= stretch * squashAmount;
+            newScale.y *= squash;
+            
+            transform.localScale = newScale;
         }
+        else
+        {
+            // Idle - дыхание
+            breathTimer += Time.deltaTime * idleBreathSpeed;
+            float breath = 1f + Mathf.Sin(breathTimer) * idleBreathAmount;
+            
+            Vector3 newScale = originalScale;
+            newScale.y *= breath;
+            newScale.x *= 1f / Mathf.Sqrt(breath);
+            
+            transform.localScale = Vector3.Lerp(transform.localScale, newScale, Time.deltaTime * 5f);
+        }
+    }
+    
+    public void ResetScale()
+    {
+        transform.localScale = originalScale;
     }
 }

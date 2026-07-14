@@ -7,7 +7,7 @@ public class EnemyBase : MonoBehaviour
     [Header("Stats")]
     [SerializeField] protected float maxHealth = 50f;
     [SerializeField] protected float moveSpeed = 3f;
-    [SerializeField] private float turnSpeed = 4f;
+    [SerializeField] protected float turnSpeed = 4f;
 
     [SerializeField] protected float damage = 5f;
     [SerializeField] protected float attackRadius = 1.2f;
@@ -21,9 +21,9 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] protected float stunDuration = 0.5f;
     
     [Header("Separation")]
-    [SerializeField] private float separationRadius = 1.1f;
-    [SerializeField] private float separationStrength = 2.5f;
-    [SerializeField] private LayerMask enemyMask; // слой врагов
+    [SerializeField] protected float separationRadius = 1.1f;        // private -> protected
+    [SerializeField] protected float separationStrength = 2.5f;      // private -> protected
+    [SerializeField] private LayerMask enemyMask;
 
     protected float currentHealth;
     protected Transform player;
@@ -33,10 +33,10 @@ public class EnemyBase : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     private Color originalColor;
 
-    private bool isStunned;
+    protected bool isStunned;
     private float stunTimer;
 
-    private Vector2 currentVelocity;
+    protected Vector2 currentVelocity;
 
     protected virtual IEnumerator Start()
     {
@@ -58,7 +58,7 @@ public class EnemyBase : MonoBehaviour
             stunTimer -= Time.deltaTime;
             if (stunTimer <= 0) isStunned = false;
 
-            currentVelocity = Vector2.zero; // или Lerp к zero
+            currentVelocity = Vector2.zero;
             return;
         }
 
@@ -81,17 +81,12 @@ public class EnemyBase : MonoBehaviour
             ? toPlayer.normalized
             : Vector2.zero;
 
-        // 1) погоня
         Vector2 desiredVelocity = desiredDirection * moveSpeed;
-
-        // 2) отталкивание от соседей
         desiredVelocity += GetSeparation(myPos) * separationStrength;
 
-        // чтобы separation не разгонял моба сильнее moveSpeed
         if (desiredVelocity.sqrMagnitude > moveSpeed * moveSpeed)
             desiredVelocity = desiredVelocity.normalized * moveSpeed;
 
-        // твоя инерция/доворот
         currentVelocity = Vector2.Lerp(
             currentVelocity,
             desiredVelocity,
@@ -101,7 +96,8 @@ public class EnemyBase : MonoBehaviour
         transform.position += (Vector3)(currentVelocity * Time.deltaTime);
     }
 
-    private Vector2 GetSeparation(Vector2 myPos)
+    // ИЗМЕНЕНО: private -> protected, чтобы наследники могли использовать
+    protected Vector2 GetSeparation(Vector2 myPos)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             myPos,
@@ -117,7 +113,6 @@ public class EnemyBase : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            // себя пропускаем
             if (hit.gameObject == gameObject)
                 continue;
 
@@ -126,7 +121,6 @@ public class EnemyBase : MonoBehaviour
 
             if (distSqr < 0.0001f)
             {
-                // почти в одной точке — толкаем случайно, иначе NaN/0
                 away = Random.insideUnitCircle;
                 if (away.sqrMagnitude < 0.0001f)
                     away = Vector2.right;
@@ -134,9 +128,7 @@ public class EnemyBase : MonoBehaviour
             }
 
             float dist = Mathf.Sqrt(distSqr);
-
-            // чем ближе, тем сильнее
-            push += away / dist; // away.normalized / dist
+            push += away / dist;
             count++;
         }
 
@@ -172,7 +164,7 @@ public class EnemyBase : MonoBehaviour
         if (currentHealth <= 0) Die();
     }
 
-    private void ApplyStun()
+    protected void ApplyStun()
     {
         isStunned = true;
         stunTimer = stunDuration;
