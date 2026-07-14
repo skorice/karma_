@@ -212,9 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96663b03ae264c959a7ed4a933bdf98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementSquashStretch
+  squashAmount: 0.8
+  stretchAmount: 1.2
+  speedMultiplier: 2
   idleBreathAmount: 0.03
   idleBreathSpeed: 2.2
-  runPulseAmount: 0.08
-  runPulseSpeed: 10
-  directionalStretch: 0.06
-  scaleLerpSpeed: 18

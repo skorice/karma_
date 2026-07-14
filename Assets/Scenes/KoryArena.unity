@@ -1155,7 +1155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: baseCount
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: baseWaveAdd
@@ -1167,7 +1167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: levelStartAdd
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: arenaSceneName
@@ -1175,7 +1175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: battleDuration
-      value: 5
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1770204512189038565, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: portalSpawnPosition
@@ -1351,7 +1351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9037500089117202642, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6.89
+      value: 6.64
       objectReference: {fileID: 0}
     - target: {fileID: 9037500089117202642, guid: f1e7a026f2aad4641955d633d599333d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1823,6 +1823,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 32603238}
     m_Modifications:
+    - target: {fileID: 359723946993667704, guid: b67a18f60360c2049861c06793db17af, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -57
+      objectReference: {fileID: 0}
+    - target: {fileID: 359723946993667704, guid: b67a18f60360c2049861c06793db17af, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 10.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2714180687193909948, guid: b67a18f60360c2049861c06793db17af, type: 3}
       propertyPath: m_Name
       value: LVL
@@ -1846,6 +1854,10 @@ PrefabInstance:
     - target: {fileID: 5106534911504824671, guid: b67a18f60360c2049861c06793db17af, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5106534911504824671, guid: b67a18f60360c2049861c06793db17af, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -11.579987
       objectReference: {fileID: 0}
     - target: {fileID: 5255985626792168081, guid: b67a18f60360c2049861c06793db17af, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1961,7 +1973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8418962613520867723, guid: b67a18f60360c2049861c06793db17af, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -19
+      value: -26
       objectReference: {fileID: 0}
     - target: {fileID: 8840518598200073237, guid: b67a18f60360c2049861c06793db17af, type: 3}
       propertyPath: m_VerticalAlignment
@@ -2807,6 +2819,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3490368182473847706, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
+      propertyPath: minimumDistanceFromPlayer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -3490368182473847706, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
+      propertyPath: minimumDistanceBetweenSpawns
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3490368182473847706, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
+      propertyPath: enemyTypes.Array.data[1].isResidual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3490368182473847706, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
+      propertyPath: enemyTypes.Array.data[2].isResidual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3490368182473847706, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
+      propertyPath: enemyTypes.Array.data[3].isResidual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3490368182473847706, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
+      propertyPath: enemyTypes.Array.data[2].quotaPercent
+      value: 35
+      objectReference: {fileID: 0}
     - target: {fileID: 971640458766416798, guid: af39f467d98749d45b845a4e7243eeb0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

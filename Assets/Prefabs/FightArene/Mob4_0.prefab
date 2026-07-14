@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5328230041311962821}
   - component: {fileID: 1945390768316672032}
   - component: {fileID: 8525895467725805479}
+  - component: {fileID: 2316342183976131077}
   m_Layer: 8
   m_Name: Mob4_0
   m_TagString: Mob
@@ -182,15 +183,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Naga
   maxHealth: 28
   moveSpeed: 6
-  turnSpeed: 3
+  turnSpeed: 1
   damage: 8
   attackRadius: 2.08
   attackCooldown: 0.2
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
   stunDuration: 0.05
-  separationRadius: 2
-  separationStrength: 3
+  separationRadius: 6
+  separationStrength: 8
   enemyMask:
     serializedVersion: 2
     m_Bits: 256
@@ -208,9 +209,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96663b03ae264c959a7ed4a933bdf98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementSquashStretch
+  squashAmount: 0.8
+  stretchAmount: 1.2
+  speedMultiplier: 2
   idleBreathAmount: 0.03
   idleBreathSpeed: 2.2
-  runPulseAmount: 0.08
-  runPulseSpeed: 10
-  directionalStretch: 0.06
-  scaleLerpSpeed: 18
+--- !u!95 &2316342183976131077
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248324175215911340}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a7d8bb0f3585a34da6227203e734ef5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

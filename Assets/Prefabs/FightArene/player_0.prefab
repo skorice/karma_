@@ -221,7 +221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e87e9a47404c2b90fed69c638c09b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageRadiusVfx
-  radius: 5
   sortingLayerName: GroundVFX
   baseSortingOrder: 0
   pulseAmount: 0.018
@@ -314,7 +313,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1966381394238714707, guid: e3398eb3b02c8e04d86f4853e7c9f898, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -412,6 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSettings
   BASEmoveSpeed: 10
+  BASEAttackRange: 5
   BASEattackPower: 8
   BASEattackSpeed: 0.8
   BASEplayerHealth: 200
@@ -420,6 +420,7 @@ MonoBehaviour:
   BUFFattackPower: 2
   BUFFattackSpeed: -0.1
   BUFFplayerHealth: 10
+  BUFFAttackRange: 1
   currentLevel: 1
 --- !u!114 &3620493790402398058
 MonoBehaviour:

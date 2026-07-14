@@ -203,7 +203,6 @@ MonoBehaviour:
   anomalyPrefabs:
   - {fileID: 1701760538857637582, guid: f9e5490e5e1a7ec449b501bf9e31ab19, type: 3}
   - {fileID: 7390505236676471855, guid: 80e339a2a711acd4ba3c1bed583a018c, type: 3}
-  - {fileID: 9217664943566872370, guid: 974d234c12242704db40d75801ec36d8, type: 3}
   - {fileID: 7872323029652355857, guid: 63de4df4dec2a4745af8a86316a45285, type: 3}
   - {fileID: 354014154101919696, guid: 1923b615f84ed764fae615eee39acad3, type: 3}
   spawnPoints:

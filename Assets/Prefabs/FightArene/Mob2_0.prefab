@@ -181,21 +181,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Kimnara
   maxHealth: 14
-  moveSpeed: 3
-  turnSpeed: 0.3
+  moveSpeed: 7
+  turnSpeed: 1
   damage: 10
   attackRadius: 2.38
   attackCooldown: 0.1
   karmaDropPrefab: {fileID: 4677157132815447361, guid: 259466b1f9cc4a248b0b93f33ddf6807, type: 3}
   karmaValue: 1
   stunDuration: 0.05
-  separationRadius: 20
-  separationStrength: 15
+  separationRadius: 10
+  separationStrength: 14
   enemyMask:
     serializedVersion: 2
     m_Bits: 256
-  minDistance: 8
-  maxDistance: 16
+  minDistance: 4
+  maxDistance: 6
   projectilePrefab: {fileID: 6296726364500513604, guid: dbbe255532dcdac48bb3cf175cad514f, type: 3}
   shootCooldown: 5
 --- !u!114 &-7342985204303411021
@@ -210,9 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96663b03ae264c959a7ed4a933bdf98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementSquashStretch
-  idleBreathAmount: 0.03
-  idleBreathSpeed: 2.2
-  runPulseAmount: 0.08
-  runPulseSpeed: 10
-  directionalStretch: 0.06
-  scaleLerpSpeed: 18
+  squashAmount: 0.8
+  stretchAmount: 1.2
+  speedMultiplier: 4
+  idleBreathAmount: 0.05
+  idleBreathSpeed: 3.2
