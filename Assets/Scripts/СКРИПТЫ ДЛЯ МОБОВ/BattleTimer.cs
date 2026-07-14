@@ -53,7 +53,7 @@ public class BattleTimer : MonoBehaviour
             return;
         }
 
-        timer = battleDuration;
+        timer = 1f;// battleDuration;
 
         if (timerSlider != null)
         {
